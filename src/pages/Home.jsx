@@ -104,13 +104,14 @@ const Home = () => {
                     position: 'relative',
                     background: 'var(--color-white)',
                     borderRadius: 'var(--radius-md)',
-                    padding: '32px',
+                    padding: '24px',
                     height: '100%',
                     display: 'flex',
-                    alignItems: 'center',
-                    gap: '24px',
+                    flexDirection: 'column',
+                    gap: '16px',
                     transition: 'var(--transition-smooth)',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    minHeight: '180px'
                 }}
                     onMouseEnter={e => {
                         e.currentTarget.style.transform = 'scale(1.02)';
@@ -121,46 +122,71 @@ const Home = () => {
                         e.currentTarget.style.background = 'var(--color-white)';
                     }}
                 >
-                    <ToolBadge type={tool.badge} />
-                    <FavoriteButton toolId={tool.id} />
-
+                    {/* 顶部区域：徽章和收藏按钮 */}
                     <div style={{
-                        width: '72px',
-                        height: '72px',
-                        borderRadius: 'var(--radius-sm)',
-                        background: `var(--surface-${color})`,
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '32px',
-                        color: `var(--color-${color})`,
-                        flexShrink: 0,
-                        transition: 'var(--transition-smooth)'
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        marginBottom: '8px',
+                        minHeight: '32px'
                     }}>
-                        <i className={getToolIcon(tool.id)}></i>
+                        <div>
+                            {tool.badge && <ToolBadge type={tool.badge} />}
+                        </div>
+                        <FavoriteButton toolId={tool.id} style={{
+                            position: 'static',
+                            width: '36px',
+                            height: '36px',
+                            fontSize: '1rem'
+                        }} />
                     </div>
 
-                    <div style={{ flex: 1 }}>
+                    {/* 中间区域：图标和标题 */}
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px'
+                    }}>
+                        <div style={{
+                            width: '56px',
+                            height: '56px',
+                            borderRadius: 'var(--radius-sm)',
+                            background: `var(--surface-${color})`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '28px',
+                            color: `var(--color-${color})`,
+                            flexShrink: 0,
+                            transition: 'var(--transition-smooth)'
+                        }}>
+                            <i className={getToolIcon(tool.id)}></i>
+                        </div>
+
                         <h3 style={{
-                            fontSize: '1.3rem',
-                            fontWeight: '800',
-                            marginBottom: '8px',
-                            color: 'var(--color-text)'
+                            fontSize: '1.1rem',
+                            fontWeight: '700',
+                            color: 'var(--color-text)',
+                            margin: 0,
+                            flex: 1
                         }}>
                             {tool.name}
                         </h3>
-                        <p style={{
-                            fontSize: '0.95rem',
-                            color: 'var(--color-text-light)',
-                            lineHeight: '1.6',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden'
-                        }}>
-                            {tool.description}
-                        </p>
                     </div>
+
+                    {/* 底部区域：描述 */}
+                    <p style={{
+                        fontSize: '0.85rem',
+                        color: 'var(--color-text-light)',
+                        lineHeight: '1.6',
+                        margin: 0,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                    }}>
+                        {tool.description}
+                    </p>
                 </div>
             </Link>
         );

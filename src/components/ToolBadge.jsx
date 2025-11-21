@@ -13,21 +13,17 @@ const ToolBadge = ({ type }) => {
 
     return (
         <div style={{
-            position: 'absolute',
-            top: '12px',
-            left: '12px',
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
             padding: '6px 12px',
-            background: 'var(--color-white)',
+            background: 'var(--surface-cream)',
             borderRadius: 'var(--radius-full)',
-            fontSize: '12px',
+            fontSize: '0.75rem',
             fontWeight: '700',
             color: 'var(--color-text)',
-            zIndex: 10
         }}>
-            <i className={config.icon} style={{ fontSize: '14px', color: config.color }}></i>
+            <i className={config.icon} style={{ fontSize: '0.875rem', color: config.color }}></i>
             <span>{config.label}</span>
         </div>
     );
