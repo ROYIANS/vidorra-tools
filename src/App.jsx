@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 import Footer from './components/Footer';
 import { tools } from './registry';
 
@@ -56,6 +57,7 @@ function App() {
             }
           />
         ))}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

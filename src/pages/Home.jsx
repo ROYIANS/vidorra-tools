@@ -29,8 +29,30 @@ const Home = () => {
     // 根据工具ID获取对应的图标
     const getToolIcon = (toolId) => {
         const iconMap = {
+            // 实用工具
+            'password-generator': 'ri-key-2-line',
             'qrcode': 'ri-qr-code-line',
+            'json-formatter': 'ri-braces-line',
+            'base64': 'ri-file-code-line',
+            'timestamp': 'ri-time-line',
+            'color-converter': 'ri-palette-line',
+            'text-diff': 'ri-git-compare-line',
+            // 设计灵感
+            'gradient-generator': 'ri-contrast-2-line',
+            'lorem-ipsum': 'ri-text',
+            'image-compressor': 'ri-image-line',
+            'svg-editor': 'ri-shape-line',
+            // 开发辅助
+            'regex-tester': 'ri-search-2-line',
+            'url-encoder': 'ri-links-line',
+            'markdown-editor': 'ri-markdown-line',
+            'uuid-generator': 'ri-fingerprint-line',
+            'cron-generator': 'ri-calendar-schedule-line',
+            // 摸鱼专区
             'hachimi-code': 'ri-lock-password-line',
+            'mini-game': 'ri-gamepad-line',
+            'random-decision': 'ri-dice-line',
+            'pomodoro': 'ri-timer-line',
         };
         return iconMap[toolId] || 'ri-tools-line';
     };
