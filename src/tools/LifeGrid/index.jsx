@@ -11,18 +11,31 @@ const LifeGrid = () => {
     const [retireAge, setRetireAge] = useState(65);
     const [childBirthAge, setChildBirthAge] = useState(28);
     const [childLeaveAge, setChildLeaveAge] = useState(18);
+    const [parentsCurrentAge, setParentsCurrentAge] = useState(55); // 父母当前年龄
+    const [parentsLifeExpectancy, setParentsLifeExpectancy] = useState(80); // 父母预期寿命
     const [showConfig, setShowConfig] = useState(false);
+    const [currentTime, setCurrentTime] = useState(new Date()); // 当前时间，用于实时更新
 
     const gridRef = useRef(null);
+
+    // 实时更新时间（每秒更新一次）
+    useEffect(() => {
+        if (!birthDate) return;
+
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [birthDate]);
 
     // 计算当前年龄
     const currentAge = useMemo(() => {
         if (!birthDate) return 0;
-        const today = new Date();
         const birth = new Date(birthDate);
-        const age = (today - birth) / (1000 * 60 * 60 * 24 * 365.25);
+        const age = (currentTime - birth) / (1000 * 60 * 60 * 24 * 365.25);
         return Math.max(0, age);
-    }, [birthDate]);
+    }, [birthDate, currentTime]);
 
     // 生成 400 个方块的数据 (20x20) - 连续的时间线逻辑
     const gridData = useMemo(() => {
@@ -49,14 +62,22 @@ const LifeGrid = () => {
         const retiredYears = Math.max(0, lifeExpectancy - retireAge);
         const retiredBlockCount = Math.floor((retiredYears / remainingYears) * futureBlocks * 0.15);
 
-        // 陪伴孩子：如果还没生孩子或孩子还没离开
-        const childStartAge = Math.max(currentAge, childBirthAge);
-        const childEndAge = childBirthAge + childLeaveAge;
-        const childYears = Math.max(0, Math.min(childEndAge, lifeExpectancy) - childStartAge);
-        const childBlockCount = Math.floor((childYears / remainingYears) * futureBlocks * 0.2);
+        // 陪伴孩子：只有在孩子出生后且未满18岁的时间段内才计算
+        let childBlockCount = 0;
+        if (currentAge < childBirthAge + childLeaveAge) {
+            // 孩子陪伴的起始年龄（如果还没生，就从生孩子开始；如果已经生了，就从现在开始）
+            const childStartAge = Math.max(currentAge, childBirthAge);
+            // 孩子陪伴的结束年龄（孩子18岁离开）
+            const childEndAge = childBirthAge + childLeaveAge;
+            // 实际能陪伴孩子的年数
+            const childYears = Math.max(0, Math.min(childEndAge, lifeExpectancy) - childStartAge);
+            // 每天5小时陪伴 = 约20%的时间
+            childBlockCount = Math.floor((childYears / remainingYears) * futureBlocks * 0.2);
+        }
 
-        // 陪伴父母：假设未来30年，每月1天 = 约1%
-        const parentsYears = Math.min(30, remainingYears);
+        // 陪伴父母：根据父母剩余寿命计算，每月1天 = 约3%
+        const parentsRemainingYears = Math.max(0, parentsLifeExpectancy - parentsCurrentAge);
+        const parentsYears = Math.min(parentsRemainingYears, remainingYears);
         const parentsBlockCount = Math.floor((parentsYears / remainingYears) * futureBlocks * 0.03);
 
         for (let i = 0; i < totalBlocks; i++) {
@@ -140,7 +161,7 @@ const LifeGrid = () => {
         }
 
         return blocks;
-    }, [birthDate, currentAge, lifeExpectancy, workStartAge, retireAge, childBirthAge, childLeaveAge]);
+    }, [birthDate, currentAge, lifeExpectancy, workStartAge, retireAge, childBirthAge, childLeaveAge, parentsCurrentAge, parentsLifeExpectancy]);
 
     // 计算统计数据
     const stats = useMemo(() => {
@@ -163,6 +184,52 @@ const LifeGrid = () => {
             free: { count: free, percent: (free / total * 100).toFixed(1) },
         };
     }, [gridData]);
+
+    // 计算已过去和剩余的时间详细数据
+    const timeDetails = useMemo(() => {
+        if (!birthDate) return null;
+
+        const birth = new Date(birthDate);
+        const lifeExpectancyMs = lifeExpectancy * 365.25 * 24 * 60 * 60 * 1000;
+        const expectedDeathDate = new Date(birth.getTime() + lifeExpectancyMs);
+
+        // 已过去的时间
+        const passedMs = currentTime - birth;
+        const passedYears = passedMs / (1000 * 60 * 60 * 24 * 365.25);
+        const passedMonths = passedYears * 12;
+        const passedDays = passedMs / (1000 * 60 * 60 * 24);
+        const passedHours = passedMs / (1000 * 60 * 60);
+        const passedMinutes = passedMs / (1000 * 60);
+        const passedSeconds = passedMs / 1000;
+
+        // 剩余的时间
+        const remainingMs = expectedDeathDate - currentTime;
+        const remainingYears = remainingMs / (1000 * 60 * 60 * 24 * 365.25);
+        const remainingMonths = remainingYears * 12;
+        const remainingDays = remainingMs / (1000 * 60 * 60 * 24);
+        const remainingHours = remainingMs / (1000 * 60 * 60);
+        const remainingMinutes = remainingMs / (1000 * 60);
+        const remainingSeconds = remainingMs / 1000;
+
+        return {
+            passed: {
+                years: passedYears.toFixed(1),
+                months: passedMonths.toFixed(1),
+                days: passedDays.toFixed(1),
+                hours: passedHours.toFixed(1),
+                minutes: passedMinutes.toFixed(1),
+                seconds: passedSeconds.toFixed(1),
+            },
+            remaining: {
+                years: Math.max(0, remainingYears).toFixed(1),
+                months: Math.max(0, remainingMonths).toFixed(1),
+                days: Math.max(0, remainingDays).toFixed(1),
+                hours: Math.max(0, remainingHours).toFixed(1),
+                minutes: Math.max(0, remainingMinutes).toFixed(1),
+                seconds: Math.max(0, remainingSeconds).toFixed(1),
+            },
+        };
+    }, [birthDate, lifeExpectancy, currentTime]);
 
     // 截图保存功能
     const handleSaveImage = async () => {
@@ -273,6 +340,30 @@ const LifeGrid = () => {
                                 step={1}
                             />
                         </div>
+                        <div className="config-slider-group">
+                            <label className="config-slider-label">
+                                父母当前年龄: {parentsCurrentAge} 岁
+                            </label>
+                            <Slider
+                                value={[parentsCurrentAge]}
+                                onValueChange={(value) => setParentsCurrentAge(value[0])}
+                                min={40}
+                                max={90}
+                                step={1}
+                            />
+                        </div>
+                        <div className="config-slider-group">
+                            <label className="config-slider-label">
+                                父母预期寿命: {parentsLifeExpectancy} 岁
+                            </label>
+                            <Slider
+                                value={[parentsLifeExpectancy]}
+                                onValueChange={(value) => setParentsLifeExpectancy(value[0])}
+                                min={60}
+                                max={100}
+                                step={1}
+                            />
+                        </div>
                     </div>
                 )}
             </div>
@@ -286,6 +377,71 @@ const LifeGrid = () => {
                             你已经走过了 {stats.lived.percent}% 的人生
                         </div>
                     </div>
+
+                    {/* 时间详细统计 */}
+                    {timeDetails && (
+                        <div className="time-details-container">
+                            <div className="time-details-section">
+                                <h3 className="time-details-title">你已经走过的生命</h3>
+                                <div className="time-details-grid">
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.passed.years}</div>
+                                        <div className="time-label">年</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.passed.months}</div>
+                                        <div className="time-label">月</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.passed.days}</div>
+                                        <div className="time-label">天</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.passed.hours}</div>
+                                        <div className="time-label">时</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.passed.minutes}</div>
+                                        <div className="time-label">分</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.passed.seconds}</div>
+                                        <div className="time-label">秒</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="time-details-section">
+                                <h3 className="time-details-title">剩下的时间</h3>
+                                <div className="time-details-grid">
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.remaining.years}</div>
+                                        <div className="time-label">年</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.remaining.months}</div>
+                                        <div className="time-label">月</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.remaining.days}</div>
+                                        <div className="time-label">天</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.remaining.hours}</div>
+                                        <div className="time-label">时</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.remaining.minutes}</div>
+                                        <div className="time-label">分</div>
+                                    </div>
+                                    <div className="time-item">
+                                        <div className="time-value">{timeDetails.remaining.seconds}</div>
+                                        <div className="time-label">秒</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* 人生方格网格 */}
                     <div className="life-grid-main">

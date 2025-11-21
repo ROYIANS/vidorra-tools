@@ -300,7 +300,6 @@
 
 .stats-item:hover {
     transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .stats-percent {
@@ -411,6 +410,68 @@
     border-radius: var(--radius-lg);
 }
 
+/* 时间详细统计 */
+.time-details-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: clamp(20px, 4vw, 32px);
+    margin-bottom: clamp(20px, 4vw, 32px);
+}
+
+.time-details-section {
+    background-color: transparent;
+    padding: clamp(16px, 3vw, 24px);
+}
+
+.time-details-section:first-child {
+    background-color: var(--surface-mint);
+    border-radius: var(--radius-lg);
+}
+
+.time-details-section:last-child {
+    background-color: var(--surface-lavender);
+    border-radius: var(--radius-lg);
+}
+
+.time-details-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.time-details-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.time-item {
+    background-color: transparent;
+    padding: 12px 8px;
+    text-align: center;
+    transition: var(--transition-smooth);
+}
+
+.time-item:hover {
+    transform: scale(1.1);
+}
+
+.time-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--color-coral);
+    margin-bottom: 6px;
+    font-family: var(--font-artistic);
+}
+
+.time-label {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    font-weight: 600;
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
     .grid-container {
@@ -432,5 +493,13 @@
 
     .config-advanced {
         grid-template-columns: 1fr;
+    }
+
+    .time-details-container {
+        grid-template-columns: 1fr;
+    }
+
+    .time-details-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
