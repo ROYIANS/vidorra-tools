@@ -357,11 +357,100 @@
 }
 
 .life-grid-quote p {
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-size: clamp(0.9rem, 2.5vw, 0.8rem);
     color: var(--color-text);
     line-height: 1.8;
-    font-style: italic;
+    font-weight: 100;
     margin: 0;
+}
+
+/* 说明文字 */
+.life-grid-description {
+    background-color: var(--surface-cream);
+    border-radius: var(--radius-lg);
+    padding: clamp(20px, 4vw, 32px);
+    margin-bottom: clamp(20px, 4vw, 32px);
+}
+
+.description-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 16px;
+}
+
+.description-text {
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.description-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.description-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.color-dot {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-top: 3px;
+}
+
+.color-dot-lived {
+    background-color: #6BCF7F;
+}
+
+.color-dot-sleep {
+    background-color: #A3D5FF;
+}
+
+.color-dot-work {
+    background-color: #8B6F47;
+}
+
+.color-dot-retired {
+    background-color: #FF9F1C;
+}
+
+.color-dot-child {
+    background-color: #FFB088;
+}
+
+.color-dot-parents {
+    background-color: #FF8FA3;
+}
+
+.color-dot-free {
+    background-color: #D3D3D3;
+}
+
+.description-footer {
+    font-size: 1rem;
+    color: var(--color-coral);
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.description-reference {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    text-align: center;
+    font-style: italic;
 }
 
 /* 操作按钮 */

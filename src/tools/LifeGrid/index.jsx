@@ -11,7 +11,6 @@ const LifeGrid = () => {
     const [retireAge, setRetireAge] = useState(65);
     const [childBirthAge, setChildBirthAge] = useState(28);
     const [childLeaveAge, setChildLeaveAge] = useState(18);
-    const [parentsCurrentAge, setParentsCurrentAge] = useState(55); // 父母当前年龄
     const [parentsLifeExpectancy, setParentsLifeExpectancy] = useState(80); // 父母预期寿命
     const [showConfig, setShowConfig] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date()); // 当前时间，用于实时更新
@@ -58,27 +57,30 @@ const LifeGrid = () => {
         const workYears = Math.max(0, retireAge - Math.max(currentAge, workStartAge));
         const workBlockCount = Math.floor((workYears / remainingYears) * futureBlocks * 0.33);
 
-        // 退休：退休后的时间
-        const retiredYears = Math.max(0, lifeExpectancy - retireAge);
-        const retiredBlockCount = Math.floor((retiredYears / remainingYears) * futureBlocks * 0.15);
-
-        // 陪伴孩子：只有在孩子出生后且未满18岁的时间段内才计算
+        // 陪伴孩子：根据实际年龄计算剩余陪伴时间
         let childBlockCount = 0;
-        if (currentAge < childBirthAge + childLeaveAge) {
-            // 孩子陪伴的起始年龄（如果还没生，就从生孩子开始；如果已经生了，就从现在开始）
-            const childStartAge = Math.max(currentAge, childBirthAge);
-            // 孩子陪伴的结束年龄（孩子18岁离开）
-            const childEndAge = childBirthAge + childLeaveAge;
-            // 实际能陪伴孩子的年数
-            const childYears = Math.max(0, Math.min(childEndAge, lifeExpectancy) - childStartAge);
-            // 每天5小时陪伴 = 约20%的时间
-            childBlockCount = Math.floor((childYears / remainingYears) * futureBlocks * 0.2);
+        let childRemainingYears = 0;
+        if (currentAge < childBirthAge) {
+            // 还没生孩子，有完整的18年陪伴时间
+            childRemainingYears = childLeaveAge;
+        } else if (currentAge >= childBirthAge && currentAge < childBirthAge + childLeaveAge) {
+            // 已经生了孩子，但孩子还没离开
+            childRemainingYears = Math.max(0, childLeaveAge - (currentAge - childBirthAge));
+        }
+        // 每天5小时陪伴，占一天的 5/24 ≈ 20.8%
+        if (childRemainingYears > 0) {
+            const childHoursTotal = childRemainingYears * 365 * 5;
+            const childHoursPercent = childHoursTotal / (remainingYears * 365 * 24);
+            childBlockCount = Math.floor(futureBlocks * childHoursPercent);
         }
 
-        // 陪伴父母：根据父母剩余寿命计算，每月1天 = 约3%
+        // 陪伴父母：父母年龄 = 用户年龄 + 25，计算到父母80岁的陪伴时间
+        const parentsCurrentAge = currentAge + 25;
         const parentsRemainingYears = Math.max(0, parentsLifeExpectancy - parentsCurrentAge);
-        const parentsYears = Math.min(parentsRemainingYears, remainingYears);
-        const parentsBlockCount = Math.floor((parentsYears / remainingYears) * futureBlocks * 0.03);
+        // 每月1天陪伴，占一个月的 1/30 ≈ 3.3%
+        const parentsDaysTotal = parentsRemainingYears * 12 * 1;
+        const parentsDaysPercent = parentsDaysTotal / (remainingYears * 365);
+        const parentsBlockCount = Math.floor(futureBlocks * parentsDaysPercent);
 
         for (let i = 0; i < totalBlocks; i++) {
             const blockAge = i * yearsPerBlock;
@@ -95,7 +97,12 @@ const LifeGrid = () => {
                 type = 'current';
                 label = '现在';
             }
-            // 3. 未来时间 - 按顺序连续分配
+            // 3. 退休那年的格子（橙色）- 优先判断
+            else if (blockAge >= retireAge && blockAge < retireAge + yearsPerBlock) {
+                type = 'retired';
+                label = '退休了';
+            }
+            // 4. 未来时间 - 按顺序连续分配
             else {
                 const futureIndex = i - currentBlockIndex - 1;
 
@@ -116,34 +123,16 @@ const LifeGrid = () => {
                     }
                 }
                 else if (futureIndex < sleepBlockCount + workBlockCount + childBlockCount) {
-                    // 陪伴孩子时间（桃色）- 只在孩子18岁前
-                    if (blockAge >= childBirthAge && blockAge < childBirthAge + childLeaveAge) {
-                        type = 'child';
-                        label = '陪伴孩子';
-                    } else {
-                        type = 'free';
-                        label = '自由时间';
-                    }
+                    // 陪伴孩子时间（桃色）
+                    // 只要被分配了childBlockCount，就显示为陪伴孩子
+                    type = 'child';
+                    label = '陪伴孩子';
                 }
                 else if (futureIndex < sleepBlockCount + workBlockCount + childBlockCount + parentsBlockCount) {
-                    // 陪伴父母时间（玫瑰色）- 未来30年内
-                    if (blockAge < currentAge + 30) {
-                        type = 'parents';
-                        label = '陪伴父母';
-                    } else {
-                        type = 'free';
-                        label = '自由时间';
-                    }
-                }
-                else if (futureIndex < sleepBlockCount + workBlockCount + childBlockCount + parentsBlockCount + retiredBlockCount) {
-                    // 退休时间（橙色）- 只在退休后
-                    if (blockAge >= retireAge) {
-                        type = 'retired';
-                        label = '退休生活';
-                    } else {
-                        type = 'free';
-                        label = '自由时间';
-                    }
+                    // 陪伴父母时间（玫瑰色）
+                    // 只要被分配了parentsBlockCount，就显示为陪伴父母
+                    type = 'parents';
+                    label = '陪伴父母';
                 }
                 else {
                     // 自由时间（灰色）
@@ -161,7 +150,7 @@ const LifeGrid = () => {
         }
 
         return blocks;
-    }, [birthDate, currentAge, lifeExpectancy, workStartAge, retireAge, childBirthAge, childLeaveAge, parentsCurrentAge, parentsLifeExpectancy]);
+    }, [birthDate, currentAge, lifeExpectancy, workStartAge, retireAge, childBirthAge, childLeaveAge, parentsLifeExpectancy]);
 
     // 计算统计数据
     const stats = useMemo(() => {
@@ -342,18 +331,6 @@ const LifeGrid = () => {
                         </div>
                         <div className="config-slider-group">
                             <label className="config-slider-label">
-                                父母当前年龄: {parentsCurrentAge} 岁
-                            </label>
-                            <Slider
-                                value={[parentsCurrentAge]}
-                                onValueChange={(value) => setParentsCurrentAge(value[0])}
-                                min={40}
-                                max={90}
-                                step={1}
-                            />
-                        </div>
-                        <div className="config-slider-group">
-                            <label className="config-slider-label">
                                 父母预期寿命: {parentsLifeExpectancy} 岁
                             </label>
                             <Slider
@@ -505,7 +482,6 @@ const LifeGrid = () => {
                                 { key: 'work', label: '工作' },
                                 { key: 'child', label: '陪伴孩子' },
                                 { key: 'parents', label: '陪伴父母' },
-                                { key: 'retired', label: '退休' },
                                 { key: 'free', label: '自由' },
                             ].map(({ key, label }) => (
                                 <div key={key} className="stats-item">
@@ -517,6 +493,29 @@ const LifeGrid = () => {
                                 </div>
                             ))}
                         </div>
+                    </div>
+
+                    {/* 说明文字 */}
+                    <div className="life-grid-description">
+                        <h3 className="description-title">说明</h3>
+                        <p className="description-text">
+                            假设我们的寿命是80岁，分为400个方块。
+                        </p>
+                        <ul className="description-list">
+                            <li><span className="color-dot color-dot-lived"></span>你已经走过的生命</li>
+                            <li><span className="color-dot color-dot-sleep"></span>如果你平均每天休息 8 小时，这是你余下生命里睡眠占用的时间</li>
+                            <li><span className="color-dot color-dot-work"></span>如果你 65 岁退休，退休前平均每天工作 8 小时，这是你余下生命里工作占用的时间</li>
+                            <li><span className="color-dot color-dot-retired"></span>65 岁，你退休了</li>
+                            <li><span className="color-dot color-dot-child"></span>如果你 28 岁生孩子，孩子18岁出门上大学，这 18 年里你平均每天能花 5 个小时陪伴孩子，这里是你余下生命里所用去的时间</li>
+                            <li><span className="color-dot color-dot-parents"></span>如果你每个月能看望父母一天，在他们 80 岁前，这是你的余生里还能陪伴他们的时光</li>
+                            <li><span className="color-dot color-dot-free"></span>除了以上之外，你剩下的所有日子</li>
+                        </ul>
+                        <p className="description-footer">
+                            数据仅供娱乐，人生苦短，继续努力吧~
+                        </p>
+                        <p className="description-reference">
+                            参考了小程序 lifecount 而制作的网页版本
+                        </p>
                     </div>
 
                     {/* 感悟文字 */}
