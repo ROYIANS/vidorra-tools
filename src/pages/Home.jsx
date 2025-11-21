@@ -251,8 +251,8 @@ const Home = () => {
                     <p style={{
                         fontSize: '1.5rem',
                         color: 'var(--color-text-light)',
-                        fontFamily: 'var(--font-serif)',
-                        fontStyle: 'italic',
+                        fontFamily: 'var(--font-artistic)',
+                        fontWeight: 'normal',
                         marginBottom: '48px',
                     }}>
                         创意与实用的完美融合
@@ -348,9 +348,9 @@ const Home = () => {
                                         }}>
                                             <h2 style={{
                                                 fontSize: '2rem',
-                                                fontWeight: '800',
+                                                fontWeight: 'normal',
                                                 color: 'var(--color-text)',
-                                                fontFamily: 'var(--font-sans)',
+                                                fontFamily: 'var(--font-artistic)',
                                             }}>我的收藏</h2>
                                             <div style={{ flex: 1, height: '1px', background: 'var(--color-text)', opacity: 0.1 }}></div>
                                         </div>
@@ -373,9 +373,9 @@ const Home = () => {
                                         }}>
                                             <h2 style={{
                                                 fontSize: '2rem',
-                                                fontWeight: '800',
+                                                fontWeight: 'normal',
                                                 color: 'var(--color-text)',
-                                                fontFamily: 'var(--font-sans)',
+                                                fontFamily: 'var(--font-artistic)',
                                             }}>热门推荐</h2>
                                             <div style={{ flex: 1, height: '1px', background: 'var(--color-text)', opacity: 0.1 }}></div>
                                         </div>
@@ -436,11 +436,11 @@ const Home = () => {
                                         <div className="category-header">
                                             <h2 style={{
                                                 fontSize: '3rem',
-                                                fontWeight: '900',
+                                                fontWeight: 'normal',
                                                 color: `var(--color-${getCategoryColor(cat.id)})`,
                                                 lineHeight: '1',
                                                 marginBottom: '16px',
-                                                fontFamily: 'var(--font-sans)',
+                                                fontFamily: 'var(--font-artistic)',
                                                 opacity: 0.8,
                                             }}>
                                                 {cat.name}
@@ -448,8 +448,8 @@ const Home = () => {
                                             <p style={{
                                                 fontSize: '1.1rem',
                                                 color: 'var(--color-text-light)',
-                                                fontFamily: 'var(--font-serif)',
-                                                fontStyle: 'italic',
+                                                fontFamily: 'var(--font-sans)',
+                                                fontWeight: '300',
                                             }}>
                                                 探索{cat.name}分类工具
                                             </p>

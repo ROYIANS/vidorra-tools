@@ -83,8 +83,8 @@ const Preloader = ({ visible }) => {
                 animation: 'fadeInUp 0.8s ease-out'
             }}>
                 <h3 style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontStyle: 'italic',
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: '300',
                     fontSize: '1.2rem',
                     color: 'var(--color-text-light)',
                     marginBottom: '16px',
