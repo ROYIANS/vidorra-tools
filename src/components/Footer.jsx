@@ -115,10 +115,10 @@ const Footer = () => {
                     lineHeight: '1.6',
                 }}>
                     <p style={{ margin: '4px 0' }}>
-                        © {currentYear} Vidorra.life · All rights reserved
+                        © {currentYear} Vidorra.life · 版权所有
                     </p>
                     <p style={{ margin: '4px 0' }}>
-                        Made with <span style={{ color: 'var(--color-rose)' }}>♥</span> by ROYIANS
+                        由 ROYIANS 用 <span style={{ color: 'var(--color-rose)' }}>♥</span> 制作
                     </p>
                 </div>
 

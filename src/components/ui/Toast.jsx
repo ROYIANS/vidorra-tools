@@ -15,7 +15,7 @@ export const Toast = React.forwardRef(({ children, title, description, ...props 
                 </ToastPrimitive.Description>
             )}
             {children}
-            <ToastPrimitive.Close aria-label="Close">
+            <ToastPrimitive.Close aria-label="关闭">
                 <span aria-hidden="true">×</span>
             </ToastPrimitive.Close>
         </ToastPrimitive.Root>

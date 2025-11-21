@@ -16,7 +16,7 @@ const Slider = ({ value, onValueChange, min = 0, max = 100, step = 1, ...props }
         <SliderPrimitive.Track className="SliderTrack">
             <SliderPrimitive.Range className="SliderRange" />
         </SliderPrimitive.Track>
-        <SliderPrimitive.Thumb className="SliderThumb" aria-label="Volume" />
+        <SliderPrimitive.Thumb className="SliderThumb" aria-label="滑块" />
     </SliderPrimitive.Root>
 );
 

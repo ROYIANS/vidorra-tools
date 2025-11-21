@@ -238,7 +238,7 @@ const Home = () => {
                         fontStyle: 'italic',
                         marginBottom: '48px',
                     }}>
-                        Creativity & Utility in Harmony
+                        创意与实用的完美融合
                     </p>
 
                     {/* Search Bar */}
@@ -250,7 +250,7 @@ const Home = () => {
                     }}>
                         <input
                             type="text"
-                            placeholder="Search for tools..."
+                            placeholder="搜索工具..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             style={{
@@ -298,7 +298,7 @@ const Home = () => {
                             marginBottom: '32px',
                             fontFamily: 'var(--font-sans)',
                         }}>
-                            Search Results
+                            搜索结果
                         </h2>
                         {searchResults.length > 0 ? (
                             <div style={{
@@ -310,7 +310,7 @@ const Home = () => {
                             </div>
                         ) : (
                             <div style={{ textAlign: 'center', padding: '60px', color: 'var(--color-text-light)' }}>
-                                No tools found matching "{search}"
+                                未找到与 "{search}" 匹配的工具
                             </div>
                         )}
                     </div>
@@ -334,7 +334,7 @@ const Home = () => {
                                                 fontWeight: '800',
                                                 color: 'var(--color-text)',
                                                 fontFamily: 'var(--font-sans)',
-                                            }}>Favorites</h2>
+                                            }}>我的收藏</h2>
                                             <div style={{ flex: 1, height: '1px', background: 'var(--color-text)', opacity: 0.1 }}></div>
                                         </div>
                                         <div className="bento-grid">
@@ -359,7 +359,7 @@ const Home = () => {
                                                 fontWeight: '800',
                                                 color: 'var(--color-text)',
                                                 fontFamily: 'var(--font-sans)',
-                                            }}>Trending Now</h2>
+                                            }}>热门推荐</h2>
                                             <div style={{ flex: 1, height: '1px', background: 'var(--color-text)', opacity: 0.1 }}></div>
                                         </div>
                                         <div className="bento-grid">
@@ -383,7 +383,7 @@ const Home = () => {
                                     setActiveCategory('all');
                                 }}
                             >
-                                All
+                                全部
                             </button>
                             {categories.map(cat => (
                                 <button
@@ -434,7 +434,7 @@ const Home = () => {
                                                 fontFamily: 'var(--font-serif)',
                                                 fontStyle: 'italic',
                                             }}>
-                                                Explore {cat.name} tools
+                                                探索{cat.name}分类工具
                                             </p>
                                         </div>
 

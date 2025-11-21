@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
 const TIPS = [
-    "Did you know? You can copy passwords with one click.",
-    "Vidorra means 'Life' in a certain context... or just 'Good Life'.",
-    "Try the JSON Formatter for messy API responses.",
-    "Take a break with the Pomodoro timer.",
-    "Design is intelligence made visible.",
-    "Use the search bar to quickly find what you need.",
-    "Customize your experience in the settings.",
-    "Stay hydrated while coding!",
-    "A clear mind leads to clean code.",
-    "Simplicity is the ultimate sophistication."
+    "你知道吗？你可以一键复制密码。",
+    "Vidorra 的含义是「生活」，或者说「美好生活」。",
+    "试试用 JSON 格式化工具整理混乱的 API 响应吧。",
+    "用番茄钟计时器休息一下。",
+    "设计即可视化的智慧。",
+    "使用搜索栏快速找到你需要的工具。",
+    "在设置中自定义你的体验。",
+    "编码时记得补充水分！",
+    "清晰的思维带来干净的代码。",
+    "简约即是终极奢华。"
 ];
 
 const Preloader = ({ visible }) => {
@@ -71,7 +71,7 @@ const Preloader = ({ visible }) => {
                     textTransform: 'uppercase',
                     color: 'var(--color-text)',
                     animation: 'pulse 1.5s ease-in-out infinite'
-                }}>Loading...</span>
+                }}>加载中...</span>
             </div>
 
             {/* Tip Section */}
@@ -89,7 +89,7 @@ const Preloader = ({ visible }) => {
                     color: 'var(--color-text-light)',
                     marginBottom: '16px',
                     opacity: 0.8
-                }}>Tip</h3>
+                }}>小贴士</h3>
                 <p style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '1.5rem',
