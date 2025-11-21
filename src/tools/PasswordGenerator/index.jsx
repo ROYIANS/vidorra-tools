@@ -155,7 +155,8 @@ const PasswordGenerator = () => {
                     fontSize: '2.5rem',
                     marginBottom: '12px',
                     color: 'var(--color-text)',
-                    fontWeight: '800',
+                    fontWeight: 'normal',
+                    fontFamily: 'var(--font-artistic)',
                 }}>
                     随机密码生成器
                 </h1>

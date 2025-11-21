@@ -41,9 +41,10 @@ const ComingSoon = () => {
             {/* 标题 */}
             <h1 style={{
                 fontSize: '2.5rem',
-                fontWeight: '800',
+                fontWeight: 'normal',
                 color: 'var(--color-text)',
                 marginBottom: '16px',
+                fontFamily: 'var(--font-artistic)',
             }}>
                 {currentTool ? currentTool.name : '工具'}
             </h1>

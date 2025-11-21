@@ -64,14 +64,14 @@ const Preloader = ({ visible }) => {
                     animation: 'spin 1s linear infinite',
                 }}></div>
                 <span style={{
-                    fontFamily: 'var(--font-mono)',
+                    fontFamily: 'var(--font-sans)',
                     fontSize: '0.9rem',
                     fontWeight: 'bold',
                     letterSpacing: '2px',
                     textTransform: 'uppercase',
                     color: 'var(--color-text)',
                     animation: 'pulse 1.5s ease-in-out infinite'
-                }}>加载中...</span>
+                }}>LOADING</span>
             </div>
 
             {/* Tip Section */}
@@ -88,12 +88,14 @@ const Preloader = ({ visible }) => {
                     fontSize: '1.2rem',
                     color: 'var(--color-text-light)',
                     marginBottom: '16px',
-                    opacity: 0.8
-                }}>小贴士</h3>
+                    opacity: 0.8,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
+                }}>Tips</h3>
                 <p style={{
-                    fontFamily: 'var(--font-sans)',
+                    fontFamily: 'var(--font-artistic)',
                     fontSize: '1.5rem',
-                    fontWeight: '600',
+                    fontWeight: 'normal',
                     color: 'var(--color-text)',
                     lineHeight: '1.4'
                 }}>
