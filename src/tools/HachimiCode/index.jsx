@@ -287,39 +287,41 @@ const HachimiCode = () => {
         <div style={{
             maxWidth: '1000px',
             margin: '0 auto',
-            padding: '24px',
+            padding: 'clamp(12px, 3vw, 24px)',
+            minHeight: '100vh',
         }}>
             {/* 标题区域 */}
             <div style={{
                 textAlign: 'center',
-                marginBottom: '40px',
+                marginBottom: 'clamp(24px, 5vw, 40px)',
             }}>
                 <h1 style={{
-                    fontSize: '2.5rem',
+                    fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
                     marginBottom: '12px',
                     color: 'var(--color-text)',
                     fontWeight: 'normal',
                     fontFamily: 'var(--font-artistic)',
                 }}>
-                    哈基米密码
+                    南北绿豆
                 </h1>
                 <p style={{
-                    fontSize: '1rem',
+                    fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                     color: 'var(--color-text-light)',
-                    marginBottom: '8px',
+                    marginBottom: '16px',
+                    fontStyle: 'italic',
                 }}>
-                    Hachimi Code
+                    "语言死的那一天，不是它被禁止，而是它变成所有人都能接受的东西。"
                 </p>
                 <p style={{
-                    fontSize: '0.9rem',
+                    fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
                     color: 'var(--color-text-light)',
-                    lineHeight: '1.6',
+                    lineHeight: '1.8',
+                    maxWidth: '680px',
+                    margin: '0 auto',
                 }}>
-                    将任何文字转换成由"哈基米"、"曼波哈"、"南北绿豆"等16种趣味词组组成的密文
-                    <br />
-                    <span style={{ fontSize: '0.85rem', opacity: 0.8 }}>
-                        ✨ 采用16词组(4位编码) + XOR加密 + 20种标点符号
-                    </span>
+                    一个壳，一个纯粹的壳，没有意义，只剩用法。<br />
+                    将你的文字转化为「哈基米曼波南北绿豆」的组合，<br />
+                    一词即可千变万化，可以压缩人类语言最精华的部分。
                 </p>
             </div>
 
@@ -327,14 +329,15 @@ const HachimiCode = () => {
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
-                marginBottom: '32px',
-                gap: '12px',
+                marginBottom: 'clamp(20px, 4vw, 32px)',
+                gap: 'clamp(10px, 2.5vw, 12px)',
+                flexWrap: 'wrap',
             }}>
                 <button
                     onClick={() => setMode('encode')}
                     style={{
-                        padding: '12px 32px',
-                        fontSize: '1rem',
+                        padding: 'clamp(10px, 2.5vw, 12px) clamp(24px, 6vw, 32px)',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         background: mode === 'encode' ? 'var(--color-coral)' : 'var(--surface-peach)',
                         color: mode === 'encode' ? 'var(--color-white)' : 'var(--color-text)',
@@ -344,14 +347,14 @@ const HachimiCode = () => {
                         border: 'none',
                     }}
                 >
-                    <i className="ri-lock-line" style={{ marginRight: '8px' }}></i>
-                    加密
+                    <i className="ri-translate" style={{ marginRight: '8px' }}></i>
+                    转化为南北绿豆
                 </button>
                 <button
                     onClick={() => setMode('decode')}
                     style={{
-                        padding: '12px 32px',
-                        fontSize: '1rem',
+                        padding: 'clamp(10px, 2.5vw, 12px) clamp(24px, 6vw, 32px)',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         background: mode === 'decode' ? 'var(--color-coral)' : 'var(--surface-peach)',
                         color: mode === 'decode' ? 'var(--color-white)' : 'var(--color-text)',
@@ -361,8 +364,8 @@ const HachimiCode = () => {
                         border: 'none',
                     }}
                 >
-                    <i className="ri-lock-unlock-line" style={{ marginRight: '8px' }}></i>
-                    解密
+                    <i className="ri-book-open-line" style={{ marginRight: '8px' }}></i>
+                    还原为文字
                 </button>
             </div>
 
@@ -370,28 +373,28 @@ const HachimiCode = () => {
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr',
-                gap: '24px',
+                gap: 'clamp(16px, 3vw, 24px)',
             }}>
                 {/* 输入区域 */}
                 <div>
                     <label style={{
                         display: 'block',
-                        fontSize: '1rem',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         color: 'var(--color-text)',
-                        marginBottom: '12px',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
                     }}>
-                        {mode === 'encode' ? '原文' : '密文'}
+                        {mode === 'encode' ? '你想说的话' : '南北绿豆的组合'}
                     </label>
                     <textarea
                         value={inputText}
                         onChange={(e) => setInputText(e.target.value)}
-                        placeholder={mode === 'encode' ? '输入要加密的文字...' : '输入要解密的哈基米密文...'}
+                        placeholder={mode === 'encode' ? '输入你想表达的内容...' : '输入南北绿豆密文...'}
                         style={{
                             width: '100%',
-                            minHeight: '180px',
-                            padding: '20px',
-                            fontSize: '1rem',
+                            minHeight: 'clamp(150px, 25vh, 180px)',
+                            padding: 'clamp(16px, 3.5vw, 20px)',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             background: 'var(--surface-peach)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-lg)',
@@ -408,22 +411,22 @@ const HachimiCode = () => {
                 <div>
                     <label style={{
                         display: 'block',
-                        fontSize: '1rem',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         color: 'var(--color-text)',
-                        marginBottom: '12px',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
                     }}>
-                        口令（可选）
+                        暗号（可选）
                     </label>
                     <input
                         type="text"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="输入加密口令，留空则使用默认加密"
+                        placeholder="设置一个只有你们知道的暗号..."
                         style={{
                             width: '100%',
-                            padding: '16px 20px',
-                            fontSize: '1rem',
+                            padding: 'clamp(14px, 3vw, 16px) clamp(16px, 3.5vw, 20px)',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             background: 'var(--surface-mint)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-lg)',
@@ -436,14 +439,15 @@ const HachimiCode = () => {
                 {/* 操作按钮 */}
                 <div style={{
                     display: 'flex',
-                    gap: '12px',
+                    gap: 'clamp(10px, 2.5vw, 12px)',
                     justifyContent: 'center',
+                    flexWrap: 'wrap',
                 }}>
                     <button
                         onClick={handleConvert}
                         style={{
-                            padding: '16px 48px',
-                            fontSize: '1.1rem',
+                            padding: 'clamp(14px, 3vw, 16px) clamp(36px, 8vw, 48px)',
+                            fontSize: 'clamp(1rem, 2.8vw, 1.1rem)',
                             fontWeight: '700',
                             background: 'var(--color-sunny)',
                             color: 'var(--color-white)',
@@ -456,15 +460,15 @@ const HachimiCode = () => {
                         onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
                         onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                     >
-                        <i className={mode === 'encode' ? 'ri-shield-keyhole-line' : 'ri-key-line'} style={{ marginRight: '8px' }}></i>
-                        {mode === 'encode' ? '生成密文' : '解密原文'}
+                        <i className={mode === 'encode' ? 'ri-quill-pen-line' : 'ri-eye-line'} style={{ marginRight: '8px' }}></i>
+                        {mode === 'encode' ? '转化' : '破译'}
                     </button>
 
                     <button
                         onClick={toggleMode}
                         style={{
-                            padding: '16px 24px',
-                            fontSize: '1.1rem',
+                            padding: 'clamp(14px, 3vw, 16px) clamp(20px, 5vw, 24px)',
+                            fontSize: 'clamp(1rem, 2.8vw, 1.1rem)',
                             fontWeight: '600',
                             background: 'var(--surface-lavender)',
                             color: 'var(--color-text)',
@@ -484,21 +488,21 @@ const HachimiCode = () => {
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        marginBottom: '12px',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
                     }}>
                         <label style={{
-                            fontSize: '1rem',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             fontWeight: '600',
                             color: 'var(--color-text)',
                         }}>
-                            {mode === 'encode' ? '密文' : '原文'}
+                            {mode === 'encode' ? '南北绿豆' : '破译后的文字'}
                         </label>
                         {outputText && (
                             <button
                                 onClick={copyToClipboard}
                                 style={{
-                                    padding: '8px 16px',
-                                    fontSize: '0.9rem',
+                                    padding: 'clamp(8px, 2vw, 10px) clamp(14px, 3.5vw, 16px)',
+                                    fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
                                     fontWeight: '600',
                                     background: 'var(--color-rose)',
                                     color: 'var(--color-white)',
@@ -516,9 +520,9 @@ const HachimiCode = () => {
                     <div
                         style={{
                             width: '100%',
-                            minHeight: '180px',
-                            padding: '20px',
-                            fontSize: '1rem',
+                            minHeight: 'clamp(150px, 25vh, 180px)',
+                            padding: 'clamp(16px, 3.5vw, 20px)',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             background: 'var(--surface-sunny)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-lg)',
@@ -527,37 +531,94 @@ const HachimiCode = () => {
                             wordBreak: 'break-word',
                         }}
                     >
-                        {outputText || (mode === 'encode' ? '加密后的哈基米密文将显示在这里...' : '解密后的原文将显示在这里...')}
+                        {outputText || (mode === 'encode' ? '南北绿豆绿南北，绿豆南北北绿豆...' : '破译后的文字将显示在这里...')}
                     </div>
+                </div>
+
+                {/* 灵感来源 */}
+                <div style={{
+                    marginTop: 'clamp(16px, 3vw, 24px)',
+                    padding: 'clamp(16px, 4vw, 24px)',
+                    background: 'var(--surface-lavender)',
+                    borderRadius: 'var(--radius-lg)',
+                }}>
+                    <h3 style={{
+                        fontSize: 'clamp(1rem, 2.8vw, 1.1rem)',
+                        fontWeight: '700',
+                        color: 'var(--color-text)',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
+                    }}>
+                        <i className="ri-quill-pen-line" style={{ marginRight: '8px' }}></i>
+                        灵感来源
+                    </h3>
+                    <p style={{
+                        fontSize: 'clamp(0.875rem, 2.3vw, 0.95rem)',
+                        color: 'var(--color-text-light)',
+                        lineHeight: '1.8',
+                        marginBottom: '12px',
+                    }}>
+                        本工具的创意灵感来自于 <strong>@何大壮</strong> 的随笔《南北绿豆》。
+                        在他的文章中，他想象了一个语言退化（或者说进化）的未来——所有人都变成哈基米，嘴里只会说南北绿豆。
+                    </p>
+                    <p style={{
+                        fontSize: 'clamp(0.875rem, 2.3vw, 0.95rem)',
+                        color: 'var(--color-text-light)',
+                        lineHeight: '1.8',
+                        marginBottom: '12px',
+                    }}>
+                        "它是一个壳，一个纯粹的壳，没有意义，只剩用法。"语言变成了符号的符号，
+                        可以装任何东西，每个人都选择自己希望看到的答案。
+                    </p>
+                    <a
+                        href="https://v.douyin.com/g80xF8EM_oI/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
+                            color: 'var(--color-coral)',
+                            textDecoration: 'none',
+                            fontWeight: '600',
+                            transition: 'opacity 0.3s',
+                        }}
+                        onMouseEnter={(e) => e.target.style.opacity = '0.7'}
+                        onMouseLeave={(e) => e.target.style.opacity = '1'}
+                    >
+                        <i className="ri-external-link-line"></i>
+                        阅读原文「南北绿豆」
+                    </a>
                 </div>
 
                 {/* 使用说明 */}
                 <div style={{
-                    marginTop: '24px',
-                    padding: '24px',
+                    marginTop: 'clamp(16px, 3vw, 24px)',
+                    padding: 'clamp(16px, 4vw, 24px)',
                     background: 'var(--surface-rose)',
                     borderRadius: 'var(--radius-lg)',
                 }}>
                     <h3 style={{
-                        fontSize: '1.1rem',
+                        fontSize: 'clamp(1rem, 2.8vw, 1.1rem)',
                         fontWeight: '700',
                         color: 'var(--color-text)',
-                        marginBottom: '12px',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
                     }}>
                         <i className="ri-information-line" style={{ marginRight: '8px' }}></i>
                         使用说明
                     </h3>
                     <ul style={{
-                        fontSize: '0.95rem',
+                        fontSize: 'clamp(0.875rem, 2.3vw, 0.95rem)',
                         color: 'var(--color-text-light)',
                         lineHeight: '2',
-                        paddingLeft: '20px',
+                        paddingLeft: 'clamp(16px, 4vw, 20px)',
+                        margin: 0,
                     }}>
-                        <li>密文仅由"哈基米曼波南北绿豆"九个字和中文标点组成</li>
-                        <li>可以设置口令增强安全性，解密时需要相同口令</li>
-                        <li>不设置口令也可以加密，但安全性较低</li>
-                        <li>点击切换按钮可以快速在加密和解密模式间切换</li>
-                        <li>加密后记得保存好口令，否则无法解密</li>
+                        <li>转化后的文本仅由"哈基米曼波南北绿豆"九个字和中文标点组成</li>
+                        <li>可以设置暗号增强隐私性，破译时需要相同暗号</li>
+                        <li>不设置暗号也可以转化，但别人更容易破译</li>
+                        <li>点击 <i className="ri-arrow-left-right-line" style={{ fontSize: '0.9em' }}></i> 按钮可以快速切换模式</li>
+                        <li>转化后记得保存好暗号，否则无法破译</li>
                     </ul>
                 </div>
             </div>

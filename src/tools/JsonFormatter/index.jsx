@@ -109,17 +109,18 @@ const JsonFormatter = () => {
         <div style={{
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: '24px',
+            padding: 'clamp(12px, 3vw, 24px)',
+            minHeight: '100vh',
         }}>
             <Toast open={open} onOpenChange={setOpen} title={content.title} description={content.description} />
 
             {/* 标题区域 */}
             <div style={{
                 textAlign: 'center',
-                marginBottom: '40px',
+                marginBottom: 'clamp(24px, 5vw, 40px)',
             }}>
                 <h1 style={{
-                    fontSize: '2.5rem',
+                    fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
                     marginBottom: '12px',
                     color: 'var(--color-text)',
                     fontWeight: 'normal',
@@ -128,7 +129,7 @@ const JsonFormatter = () => {
                     JSON 格式化工具
                 </h1>
                 <p style={{
-                    fontSize: '1rem',
+                    fontSize: 'clamp(0.875rem, 2.5vw, 1rem)',
                     color: 'var(--color-text-light)',
                     lineHeight: '1.6',
                 }}>
@@ -139,16 +140,16 @@ const JsonFormatter = () => {
             {/* 操作按钮 */}
             <div style={{
                 display: 'flex',
-                gap: '12px',
-                marginBottom: '24px',
+                gap: 'clamp(8px, 2vw, 12px)',
+                marginBottom: 'clamp(16px, 3vw, 24px)',
                 flexWrap: 'wrap',
                 justifyContent: 'center',
             }}>
                 <button
                     onClick={formatJson}
                     style={{
-                        padding: '12px 24px',
-                        fontSize: '1rem',
+                        padding: 'clamp(10px, 2.5vw, 12px) clamp(18px, 5vw, 24px)',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         background: 'var(--color-coral)',
                         color: 'var(--color-white)',
@@ -167,8 +168,8 @@ const JsonFormatter = () => {
                 <button
                     onClick={compressJson}
                     style={{
-                        padding: '12px 24px',
-                        fontSize: '1rem',
+                        padding: 'clamp(10px, 2.5vw, 12px) clamp(18px, 5vw, 24px)',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         background: 'var(--color-sunny)',
                         color: 'var(--color-white)',
@@ -187,8 +188,8 @@ const JsonFormatter = () => {
                 <button
                     onClick={validateJson}
                     style={{
-                        padding: '12px 24px',
-                        fontSize: '1rem',
+                        padding: 'clamp(10px, 2.5vw, 12px) clamp(18px, 5vw, 24px)',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         background: 'var(--color-mint)',
                         color: 'var(--color-white)',
@@ -207,8 +208,8 @@ const JsonFormatter = () => {
                 <button
                     onClick={loadExample}
                     style={{
-                        padding: '12px 24px',
-                        fontSize: '1rem',
+                        padding: 'clamp(10px, 2.5vw, 12px) clamp(18px, 5vw, 24px)',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         background: 'var(--surface-lavender)',
                         color: 'var(--color-text)',
@@ -227,8 +228,8 @@ const JsonFormatter = () => {
                 <button
                     onClick={clearAll}
                     style={{
-                        padding: '12px 24px',
-                        fontSize: '1rem',
+                        padding: 'clamp(10px, 2.5vw, 12px) clamp(18px, 5vw, 24px)',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         background: 'var(--surface-rose)',
                         color: 'var(--color-text)',
@@ -250,11 +251,12 @@ const JsonFormatter = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '16px',
-                marginBottom: '24px',
+                gap: 'clamp(12px, 3vw, 16px)',
+                marginBottom: 'clamp(16px, 3vw, 24px)',
+                flexWrap: 'wrap',
             }}>
                 <label style={{
-                    fontSize: '0.95rem',
+                    fontSize: 'clamp(0.875rem, 2.3vw, 0.95rem)',
                     fontWeight: '600',
                     color: 'var(--color-text)',
                 }}>
@@ -268,7 +270,7 @@ const JsonFormatter = () => {
                             alignItems: 'center',
                             gap: '6px',
                             cursor: 'pointer',
-                            fontSize: '0.95rem',
+                            fontSize: 'clamp(0.875rem, 2.3vw, 0.95rem)',
                             color: 'var(--color-text)',
                         }}
                     >
@@ -288,15 +290,15 @@ const JsonFormatter = () => {
             {/* 错误提示 */}
             {error && (
                 <div style={{
-                    padding: '16px',
-                    marginBottom: '24px',
+                    padding: 'clamp(12px, 3vw, 16px)',
+                    marginBottom: 'clamp(16px, 3vw, 24px)',
                     background: 'var(--surface-rose)',
                     borderRadius: 'var(--radius-md)',
                     color: 'var(--color-text)',
-                    fontSize: '0.95rem',
+                    fontSize: 'clamp(0.875rem, 2.3vw, 0.95rem)',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '12px',
+                    gap: 'clamp(10px, 2.5vw, 12px)',
                 }}>
                     <i className="ri-error-warning-line" style={{
                         fontSize: '1.5rem',
@@ -309,9 +311,9 @@ const JsonFormatter = () => {
             {/* 主要内容区域 */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '24px',
-                height: '600px', // 固定高度以支持滚动
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: 'clamp(16px, 3vw, 24px)',
+                height: 'clamp(400px, 70vh, 600px)',
             }}>
                 {/* 输入区域 */}
                 <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -319,10 +321,10 @@ const JsonFormatter = () => {
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        marginBottom: '12px',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
                     }}>
                         <label style={{
-                            fontSize: '1rem',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             fontWeight: '600',
                             color: 'var(--color-text)',
                         }}>
@@ -331,8 +333,8 @@ const JsonFormatter = () => {
                         <button
                             onClick={() => copyToClipboard(input)}
                             style={{
-                                padding: '6px 12px',
-                                fontSize: '0.85rem',
+                                padding: 'clamp(6px, 1.5vw, 8px) clamp(10px, 2.5vw, 12px)',
+                                fontSize: 'clamp(0.8rem, 2vw, 0.85rem)',
                                 fontWeight: '600',
                                 background: 'var(--surface-cream)',
                                 color: 'var(--color-text)',
@@ -353,8 +355,8 @@ const JsonFormatter = () => {
                         style={{
                             width: '100%',
                             height: '100%',
-                            padding: '20px',
-                            fontSize: '0.9rem',
+                            padding: 'clamp(16px, 3.5vw, 20px)',
+                            fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
                             background: 'var(--surface-peach)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-lg)',
@@ -373,10 +375,10 @@ const JsonFormatter = () => {
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        marginBottom: '12px',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
                     }}>
                         <label style={{
-                            fontSize: '1rem',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             fontWeight: '600',
                             color: 'var(--color-text)',
                         }}>
@@ -386,8 +388,8 @@ const JsonFormatter = () => {
                             <button
                                 onClick={() => copyToClipboard(output)}
                                 style={{
-                                    padding: '6px 12px',
-                                    fontSize: '0.85rem',
+                                    padding: 'clamp(6px, 1.5vw, 8px) clamp(10px, 2.5vw, 12px)',
+                                    fontSize: 'clamp(0.8rem, 2vw, 0.85rem)',
                                     fontWeight: '600',
                                     background: 'var(--color-rose)',
                                     color: 'var(--color-white)',
@@ -409,8 +411,8 @@ const JsonFormatter = () => {
                     }}>
                         <pre
                             style={{
-                                padding: '20px',
-                                fontSize: '0.9rem',
+                                padding: 'clamp(16px, 3.5vw, 20px)',
+                                fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
                                 color: 'var(--color-text)',
                                 border: 'none',
                                 outline: 'none',
@@ -429,25 +431,25 @@ const JsonFormatter = () => {
 
             {/* 使用说明 */}
             <div style={{
-                marginTop: '40px',
-                padding: '24px',
+                marginTop: 'clamp(24px, 5vw, 40px)',
+                padding: 'clamp(16px, 4vw, 24px)',
                 background: 'var(--surface-mint)',
                 borderRadius: 'var(--radius-lg)',
             }}>
                 <h3 style={{
-                    fontSize: '1.1rem',
+                    fontSize: 'clamp(1rem, 2.8vw, 1.1rem)',
                     fontWeight: '700',
                     color: 'var(--color-text)',
-                    marginBottom: '12px',
+                    marginBottom: 'clamp(10px, 2.5vw, 12px)',
                 }}>
                     <i className="ri-information-line" style={{ marginRight: '8px' }}></i>
                     使用说明
                 </h3>
                 <ul style={{
-                    fontSize: '0.9rem',
+                    fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
                     color: 'var(--color-text-light)',
                     lineHeight: '2',
-                    paddingLeft: '20px',
+                    paddingLeft: 'clamp(16px, 4vw, 20px)',
                     margin: 0,
                 }}>
                     <li><strong>美化格式</strong>：将压缩的 JSON 格式化为易读的缩进格式</li>

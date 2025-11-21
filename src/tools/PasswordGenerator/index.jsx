@@ -142,17 +142,18 @@ const PasswordGenerator = () => {
         <div style={{
             maxWidth: '1000px',
             margin: '0 auto',
-            padding: '24px',
+            padding: 'clamp(12px, 3vw, 24px)',
+            minHeight: '100vh',
         }}>
             <Toast open={open} onOpenChange={setOpen} title={content.title} description={content.description} />
 
             {/* 标题区域 */}
             <div style={{
                 textAlign: 'center',
-                marginBottom: '40px',
+                marginBottom: 'clamp(20px, 5vw, 40px)',
             }}>
                 <h1 style={{
-                    fontSize: '2.5rem',
+                    fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
                     marginBottom: '12px',
                     color: 'var(--color-text)',
                     fontWeight: 'normal',
@@ -161,7 +162,7 @@ const PasswordGenerator = () => {
                     随机密码生成器
                 </h1>
                 <p style={{
-                    fontSize: '1rem',
+                    fontSize: 'clamp(0.875rem, 2.5vw, 1rem)',
                     color: 'var(--color-text-light)',
                     lineHeight: '1.6',
                 }}>
@@ -173,24 +174,24 @@ const PasswordGenerator = () => {
             <div style={{
                 background: 'var(--color-white)',
                 borderRadius: 'var(--radius-lg)',
-                padding: '32px',
-                marginBottom: '24px',
+                padding: 'clamp(16px, 4vw, 32px)',
+                marginBottom: 'clamp(16px, 3vw, 24px)',
             }}>
                 {/* 字符类型选择 */}
-                <div style={{ marginBottom: '32px' }}>
+                <div style={{ marginBottom: 'clamp(20px, 4vw, 32px)' }}>
                     <label style={{
                         display: 'block',
-                        fontSize: '1rem',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         color: 'var(--color-text)',
-                        marginBottom: '16px',
+                        marginBottom: 'clamp(12px, 3vw, 16px)',
                     }}>
                         字符类型
                     </label>
                     <div style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: '16px',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                        gap: 'clamp(12px, 3vw, 16px)',
                     }}>
                         {[
                             { key: 'lowercase', label: '小写字母 (a-z)', color: 'coral' },
@@ -204,7 +205,7 @@ const PasswordGenerator = () => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
-                                    padding: '16px',
+                                    padding: 'clamp(12px, 3vw, 16px)',
                                     background: charSets[item.key] ? `var(--surface-${item.color})` : 'var(--surface-cream)',
                                     borderRadius: 'var(--radius-md)',
                                     transition: 'var(--transition-smooth)',
@@ -212,6 +213,7 @@ const PasswordGenerator = () => {
                             >
                                 <span style={{
                                     fontWeight: '600',
+                                    fontSize: 'clamp(0.85rem, 2.5vw, 1rem)',
                                     color: 'var(--color-text)',
                                 }}>{item.label}</span>
                                 <Switch
@@ -224,13 +226,13 @@ const PasswordGenerator = () => {
                 </div>
 
                 {/* 自定义特殊字符 */}
-                <div style={{ marginBottom: '32px' }}>
+                <div style={{ marginBottom: 'clamp(20px, 4vw, 32px)' }}>
                     <label style={{
                         display: 'block',
-                        fontSize: '1rem',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         color: 'var(--color-text)',
-                        marginBottom: '12px',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
                     }}>
                         自定义特殊字符
                     </label>
@@ -242,8 +244,8 @@ const PasswordGenerator = () => {
                         disabled={!charSets.special}
                         style={{
                             width: '100%',
-                            padding: '16px',
-                            fontSize: '1rem',
+                            padding: 'clamp(12px, 3vw, 16px)',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             background: charSets.special ? 'var(--surface-lavender)' : 'var(--surface-cream)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-md)',
@@ -256,13 +258,13 @@ const PasswordGenerator = () => {
                 </div>
 
                 {/* 排除字符 */}
-                <div style={{ marginBottom: '32px' }}>
+                <div style={{ marginBottom: 'clamp(20px, 4vw, 32px)' }}>
                     <label style={{
                         display: 'block',
-                        fontSize: '1rem',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         color: 'var(--color-text)',
-                        marginBottom: '12px',
+                        marginBottom: 'clamp(10px, 2.5vw, 12px)',
                     }}>
                         排除字符（避免混淆的字符）
                     </label>
@@ -273,8 +275,8 @@ const PasswordGenerator = () => {
                         placeholder="输入要排除的字符，如：iIl1o0O"
                         style={{
                             width: '100%',
-                            padding: '16px',
-                            fontSize: '1rem',
+                            padding: 'clamp(12px, 3vw, 16px)',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             background: 'var(--surface-rose)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-md)',
@@ -288,17 +290,17 @@ const PasswordGenerator = () => {
                 {/* 密码长度和数量 */}
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                    gap: '32px',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                    gap: 'clamp(20px, 4vw, 32px)',
                 }}>
                     <div>
                         <div style={{
                             display: 'flex',
                             justifyContent: 'space-between',
-                            marginBottom: '12px',
+                            marginBottom: 'clamp(10px, 2.5vw, 12px)',
                         }}>
                             <label style={{
-                                fontSize: '1rem',
+                                fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                                 fontWeight: '600',
                                 color: 'var(--color-text)',
                             }}>
@@ -306,6 +308,7 @@ const PasswordGenerator = () => {
                             </label>
                             <span style={{
                                 fontWeight: '700',
+                                fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                                 color: 'var(--color-coral)',
                             }}>{passwordLength}</span>
                         </div>
@@ -322,10 +325,10 @@ const PasswordGenerator = () => {
                         <div style={{
                             display: 'flex',
                             justifyContent: 'space-between',
-                            marginBottom: '12px',
+                            marginBottom: 'clamp(10px, 2.5vw, 12px)',
                         }}>
                             <label style={{
-                                fontSize: '1rem',
+                                fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                                 fontWeight: '600',
                                 color: 'var(--color-text)',
                             }}>
@@ -333,6 +336,7 @@ const PasswordGenerator = () => {
                             </label>
                             <span style={{
                                 fontWeight: '700',
+                                fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                                 color: 'var(--color-coral)',
                             }}>{passwordCount}</span>
                         </div>
@@ -350,15 +354,15 @@ const PasswordGenerator = () => {
             {/* 操作按钮 */}
             <div style={{
                 display: 'flex',
-                gap: '12px',
-                marginBottom: '24px',
+                gap: 'clamp(10px, 2.5vw, 12px)',
+                marginBottom: 'clamp(16px, 3vw, 24px)',
                 flexWrap: 'wrap',
             }}>
                 <button
                     onClick={generatePasswords}
                     style={{
-                        padding: '16px 48px',
-                        fontSize: '1.1rem',
+                        padding: 'clamp(14px, 3vw, 16px) clamp(32px, 8vw, 48px)',
+                        fontSize: 'clamp(1rem, 3vw, 1.1rem)',
                         fontWeight: '700',
                         background: 'var(--color-coral)',
                         color: 'var(--color-white)',
@@ -367,7 +371,7 @@ const PasswordGenerator = () => {
                         transition: 'var(--transition-smooth)',
                         border: 'none',
                         flex: '1',
-                        minWidth: '200px',
+                        minWidth: 'clamp(150px, 40vw, 200px)',
                     }}
                     onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
                     onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
@@ -380,8 +384,8 @@ const PasswordGenerator = () => {
                     <button
                         onClick={copyAllPasswords}
                         style={{
-                            padding: '16px 32px',
-                            fontSize: '1rem',
+                            padding: 'clamp(14px, 3vw, 16px) clamp(24px, 6vw, 32px)',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                             fontWeight: '600',
                             background: 'var(--color-sunny)',
                             color: 'var(--color-white)',
@@ -399,8 +403,8 @@ const PasswordGenerator = () => {
                 <button
                     onClick={() => setShowHistory(!showHistory)}
                     style={{
-                        padding: '16px 32px',
-                        fontSize: '1rem',
+                        padding: 'clamp(14px, 3vw, 16px) clamp(24px, 6vw, 32px)',
+                        fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         fontWeight: '600',
                         background: 'var(--surface-mint)',
                         color: 'var(--color-text)',
@@ -420,21 +424,21 @@ const PasswordGenerator = () => {
                 <div style={{
                     background: 'var(--color-white)',
                     borderRadius: 'var(--radius-lg)',
-                    padding: '24px',
-                    marginBottom: '24px',
+                    padding: 'clamp(16px, 4vw, 24px)',
+                    marginBottom: 'clamp(16px, 3vw, 24px)',
                 }}>
                     <h3 style={{
-                        fontSize: '1.2rem',
+                        fontSize: 'clamp(1.1rem, 3vw, 1.2rem)',
                         fontWeight: '700',
                         color: 'var(--color-text)',
-                        marginBottom: '16px',
+                        marginBottom: 'clamp(12px, 3vw, 16px)',
                     }}>
                         生成的密码
                     </h3>
                     <div style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '12px',
+                        gap: 'clamp(10px, 2.5vw, 12px)',
                     }}>
                         {passwords.map((pwd, index) => (
                             <div
@@ -442,8 +446,8 @@ const PasswordGenerator = () => {
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '12px',
-                                    padding: '16px',
+                                    gap: 'clamp(10px, 2.5vw, 12px)',
+                                    padding: 'clamp(12px, 3vw, 16px)',
                                     background: 'var(--surface-peach)',
                                     borderRadius: 'var(--radius-md)',
                                 }}
@@ -451,7 +455,7 @@ const PasswordGenerator = () => {
                                 <span style={{
                                     flex: '1',
                                     fontFamily: 'var(--font-mono)',
-                                    fontSize: '1.1rem',
+                                    fontSize: 'clamp(0.95rem, 2.8vw, 1.1rem)',
                                     color: 'var(--color-text)',
                                     wordBreak: 'break-all',
                                 }}>
@@ -460,8 +464,8 @@ const PasswordGenerator = () => {
                                 <button
                                     onClick={() => copyToClipboard(pwd)}
                                     style={{
-                                        padding: '8px 16px',
-                                        fontSize: '0.9rem',
+                                        padding: 'clamp(8px, 2vw, 10px) clamp(14px, 3.5vw, 16px)',
+                                        fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
                                         fontWeight: '600',
                                         background: 'var(--color-coral)',
                                         color: 'var(--color-white)',
@@ -485,16 +489,16 @@ const PasswordGenerator = () => {
                 <div style={{
                     background: 'var(--color-white)',
                     borderRadius: 'var(--radius-lg)',
-                    padding: '24px',
+                    padding: 'clamp(16px, 4vw, 24px)',
                 }}>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        marginBottom: '16px',
+                        marginBottom: 'clamp(12px, 3vw, 16px)',
                     }}>
                         <h3 style={{
-                            fontSize: '1.2rem',
+                            fontSize: 'clamp(1.1rem, 3vw, 1.2rem)',
                             fontWeight: '700',
                             color: 'var(--color-text)',
                         }}>
@@ -504,8 +508,8 @@ const PasswordGenerator = () => {
                             <button
                                 onClick={clearHistory}
                                 style={{
-                                    padding: '8px 16px',
-                                    fontSize: '0.9rem',
+                                    padding: 'clamp(8px, 2vw, 10px) clamp(14px, 3.5vw, 16px)',
+                                    fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
                                     fontWeight: '600',
                                     background: 'var(--color-rose)',
                                     color: 'var(--color-white)',
@@ -524,8 +528,9 @@ const PasswordGenerator = () => {
                     {history.length === 0 ? (
                         <div style={{
                             textAlign: 'center',
-                            padding: '40px',
+                            padding: 'clamp(30px, 8vw, 40px)',
                             color: 'var(--color-text-light)',
+                            fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
                         }}>
                             暂无历史记录
                         </div>
@@ -533,15 +538,15 @@ const PasswordGenerator = () => {
                         <div style={{
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '12px',
-                            maxHeight: '400px',
+                            gap: 'clamp(10px, 2.5vw, 12px)',
+                            maxHeight: 'clamp(300px, 60vh, 400px)',
                             overflowY: 'auto',
                         }}>
                             {history.map((item) => (
                                 <div
                                     key={item.id}
                                     style={{
-                                        padding: '16px',
+                                        padding: 'clamp(12px, 3vw, 16px)',
                                         background: 'var(--surface-cream)',
                                         borderRadius: 'var(--radius-md)',
                                         cursor: 'pointer',
@@ -552,22 +557,22 @@ const PasswordGenerator = () => {
                                     onMouseLeave={(e) => e.currentTarget.style.background = 'var(--surface-cream)'}
                                 >
                                     <div style={{
-                                        fontSize: '0.85rem',
+                                        fontSize: 'clamp(0.8rem, 2.2vw, 0.85rem)',
                                         color: 'var(--color-text-light)',
-                                        marginBottom: '8px',
+                                        marginBottom: 'clamp(6px, 1.5vw, 8px)',
                                     }}>
                                         {item.timestamp}
                                     </div>
                                     <div style={{
-                                        fontSize: '0.9rem',
+                                        fontSize: 'clamp(0.85rem, 2.3vw, 0.9rem)',
                                         color: 'var(--color-text)',
-                                        marginBottom: '8px',
+                                        marginBottom: 'clamp(6px, 1.5vw, 8px)',
                                     }}>
                                         长度: {item.config.length} | 数量: {item.config.count}
                                     </div>
                                     <div style={{
                                         fontFamily: 'var(--font-mono)',
-                                        fontSize: '0.9rem',
+                                        fontSize: 'clamp(0.8rem, 2.2vw, 0.9rem)',
                                         color: 'var(--color-text-light)',
                                         whiteSpace: 'nowrap',
                                         overflow: 'hidden',

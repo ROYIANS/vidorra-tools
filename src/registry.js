@@ -174,11 +174,11 @@ export const tools = [
     {
         id: 'hachimi-code',
         path: '/hachimi-code',
-        name: '哈基米密码',
-        description: '有趣的文本加密工具，将任何文字转换成"哈基米曼波南北绿豆"组成的密文',
+        name: '南北绿豆',
+        description: '一个壳,一个纯粹的壳。将文字转化为"哈基米曼波南北绿豆"的语言实验',
         category: 'fun',
         badge: 'hot',
-        keywords: ['hachimi', 'hajimi', '哈基米', 'jiami', '加密', 'mima', '密码', 'encode'],
+        keywords: ['hachimi', 'hajimi', '哈基米', 'nanbei', '南北', 'lvdou', '绿豆', 'jiami', '加密', 'zhuanhua', '转化'],
         component: lazy(() => import('./tools/HachimiCode'))
     },
     {
