@@ -64,7 +64,7 @@ const Home = () => {
             'base64': 'ri-file-code-line',
             'timestamp': 'ri-time-line',
             'color-converter': 'ri-palette-line',
-            'text-diff': 'ri-git-compare-line',
+            'text-diff': 'ri-file-copy-2-line',
             // 设计灵感
             'gradient-generator': 'ri-contrast-2-line',
             'lorem-ipsum': 'ri-text',
