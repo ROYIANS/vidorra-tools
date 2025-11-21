@@ -459,18 +459,25 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    margin: 0 -20px 32px;
-    /* Negative margin to span full width */
-    padding: 16px 20px;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    margin-bottom: 32px;
+    padding: 16px calc(50vw - 50% + 20px);
     display: flex;
     gap: 12px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
     /* Hide scrollbar Firefox */
+}
+
+.sticky-nav-container.stuck {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .sticky-nav-container::-webkit-scrollbar {

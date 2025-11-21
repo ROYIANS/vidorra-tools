@@ -151,6 +151,23 @@ const Home = () => {
     const [search, setSearch] = useState('');
     const [favorites, setFavorites] = useState([]);
     const [activeCategory, setActiveCategory] = useState('all');
+    const [isStuck, setIsStuck] = useState(false);
+
+    // Sticky Nav Scroll Logic
+    useEffect(() => {
+        const handleScroll = () => {
+            const stickyNav = document.querySelector('.sticky-nav-container');
+            if (stickyNav) {
+                const rect = stickyNav.getBoundingClientRect();
+                setIsStuck(rect.top <= 0);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Initial check
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     // Scroll Spy Logic
     useEffect(() => {
@@ -375,7 +392,7 @@ const Home = () => {
                         )}
 
                         {/* Sticky Navigation */}
-                        <div className="sticky-nav-container">
+                        <div className={`sticky-nav-container ${isStuck ? 'stuck' : ''}`}>
                             <button
                                 className={`nav-pill ${activeCategory === 'all' ? 'active' : ''}`}
                                 onClick={() => {
