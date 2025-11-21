@@ -1,14 +1,30 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect, Suspense } from 'react';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Footer from './components/Footer';
 import FavoriteButton from './components/FavoriteButton';
 import { tools } from './registry';
+import { ToastProvider, ToastViewport } from './components/ui/Toast';
+import Preloader from './components/Preloader'; // Import Preloader
 
 function App() {
+  const location = useLocation(); // Use useLocation hook
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Trigger loading on route change
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200); // Simulated delay for "patience" and aesthetic
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
   return (
-    <BrowserRouter>
+    <ToastProvider>
+      <Preloader visible={loading} /> {/* Add Preloader component */}
       <Routes>
         <Route path="/" element={<Home />} />
         {tools.map(tool => (
@@ -69,7 +85,8 @@ function App() {
         ))}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
+      <ToastViewport />
+    </ToastProvider >
   );
 }
 

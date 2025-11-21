@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import ScrollArea from '../../components/ui/ScrollArea';
+import { useToast, Toast } from '../../components/ui/Toast';
 
 const JsonFormatter = () => {
+    const { showToast, open, setOpen, content } = useToast();
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
     const [error, setError] = useState('');
@@ -18,9 +21,11 @@ const JsonFormatter = () => {
             const parsed = JSON.parse(input);
             const formatted = JSON.stringify(parsed, null, indentSize);
             setOutput(formatted);
+            showToast('格式化成功', 'JSON 数据已美化');
         } catch (e) {
             setError(`语法错误: ${e.message}`);
             setOutput('');
+            showToast('格式化失败', 'JSON 语法错误');
         }
     };
 
@@ -36,9 +41,11 @@ const JsonFormatter = () => {
             const parsed = JSON.parse(input);
             const compressed = JSON.stringify(parsed);
             setOutput(compressed);
+            showToast('压缩成功', 'JSON 数据已压缩');
         } catch (e) {
             setError(`语法错误: ${e.message}`);
             setOutput('');
+            showToast('压缩失败', 'JSON 语法错误');
         }
     };
 
@@ -53,9 +60,10 @@ const JsonFormatter = () => {
         try {
             JSON.parse(input);
             setError('');
-            alert('✓ JSON 格式正确');
+            showToast('验证通过', 'JSON 格式正确');
         } catch (e) {
             setError(`✗ 语法错误: ${e.message}`);
+            showToast('验证失败', 'JSON 语法错误');
         }
     };
 
@@ -63,6 +71,7 @@ const JsonFormatter = () => {
     const copyToClipboard = (text) => {
         if (text) {
             navigator.clipboard.writeText(text);
+            showToast('复制成功', '内容已复制到剪贴板');
         }
     };
 
@@ -71,6 +80,7 @@ const JsonFormatter = () => {
         setInput('');
         setOutput('');
         setError('');
+        showToast('已清空', '所有内容已被清除');
     };
 
     // 示例 JSON
@@ -92,6 +102,7 @@ const JsonFormatter = () => {
         };
         setInput(JSON.stringify(example));
         setError('');
+        showToast('示例已加载', '已填入示例 JSON 数据');
     };
 
     return (
@@ -100,6 +111,8 @@ const JsonFormatter = () => {
             margin: '0 auto',
             padding: '24px',
         }}>
+            <Toast open={open} onOpenChange={setOpen} title={content.title} description={content.description} />
+
             {/* 标题区域 */}
             <div style={{
                 textAlign: 'center',
@@ -297,9 +310,10 @@ const JsonFormatter = () => {
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
                 gap: '24px',
+                height: '600px', // 固定高度以支持滚动
             }}>
                 {/* 输入区域 */}
-                <div>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -337,13 +351,13 @@ const JsonFormatter = () => {
                         placeholder='输入或粘贴 JSON 数据...'
                         style={{
                             width: '100%',
-                            minHeight: '400px',
+                            height: '100%',
                             padding: '20px',
                             fontSize: '0.9rem',
                             background: 'var(--surface-peach)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-lg)',
-                            resize: 'vertical',
+                            resize: 'none',
                             border: 'none',
                             outline: 'none',
                             lineHeight: '1.6',
@@ -353,7 +367,7 @@ const JsonFormatter = () => {
                 </div>
 
                 {/* 输出区域 */}
-                <div>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -387,26 +401,28 @@ const JsonFormatter = () => {
                             </button>
                         )}
                     </div>
-                    <pre
-                        style={{
-                            width: '100%',
-                            minHeight: '400px',
-                            padding: '20px',
-                            fontSize: '0.9rem',
-                            background: 'var(--surface-sunny)',
-                            color: 'var(--color-text)',
-                            borderRadius: 'var(--radius-lg)',
-                            border: 'none',
-                            outline: 'none',
-                            lineHeight: '1.6',
-                            fontFamily: 'Consolas, Monaco, "Courier New", monospace',
-                            overflow: 'auto',
-                            margin: 0,
-                            whiteSpace: 'pre',
-                        }}
-                    >
-                        {output || '格式化后的 JSON 将显示在这里...'}
-                    </pre>
+                    <ScrollArea style={{
+                        flex: 1,
+                        background: 'var(--surface-sunny)',
+                        borderRadius: 'var(--radius-lg)',
+                    }}>
+                        <pre
+                            style={{
+                                padding: '20px',
+                                fontSize: '0.9rem',
+                                color: 'var(--color-text)',
+                                border: 'none',
+                                outline: 'none',
+                                lineHeight: '1.6',
+                                fontFamily: 'Consolas, Monaco, "Courier New", monospace',
+                                margin: 0,
+                                whiteSpace: 'pre-wrap',
+                                wordBreak: 'break-all',
+                            }}
+                        >
+                            {output || '格式化后的 JSON 将显示在这里...'}
+                        </pre>
+                    </ScrollArea>
                 </div>
             </div>
 

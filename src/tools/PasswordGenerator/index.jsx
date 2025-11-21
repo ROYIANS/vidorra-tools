@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Slider from '../../components/ui/Slider';
+import Switch from '../../components/ui/Switch';
+import { useToast, Toast } from '../../components/ui/Toast';
 
 const PasswordGenerator = () => {
+    const { showToast, open, setOpen, content } = useToast();
+
     // 字符集配置
     const [charSets, setCharSets] = useState({
         lowercase: true,
@@ -63,12 +68,13 @@ const PasswordGenerator = () => {
     const clearHistory = () => {
         setHistory([]);
         localStorage.removeItem('passwordHistory');
+        showToast('历史记录已清空', '所有保存的密码记录已被移除');
     };
 
     // 生成密码
     const generatePasswords = () => {
         if (!charSets.lowercase && !charSets.uppercase && !charSets.numbers && !charSets.special) {
-            alert('请至少选择一种字符类型');
+            showToast('错误', '请至少选择一种字符类型');
             return;
         }
 
@@ -86,7 +92,7 @@ const PasswordGenerator = () => {
         }
 
         if (charPool.length === 0) {
-            alert('字符池为空，请调整配置');
+            showToast('错误', '字符池为空，请调整配置');
             return;
         }
 
@@ -103,17 +109,20 @@ const PasswordGenerator = () => {
 
         setPasswords(newPasswords);
         saveToHistory(newPasswords);
+        showToast('生成成功', `已生成 ${passwordCount} 个新密码`);
     };
 
     // 复制到剪贴板
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
+        showToast('复制成功', '密码已复制到剪贴板');
     };
 
     // 复制所有密码
     const copyAllPasswords = () => {
         if (passwords.length > 0) {
             navigator.clipboard.writeText(passwords.join('\n'));
+            showToast('复制成功', '所有密码已复制到剪贴板');
         }
     };
 
@@ -126,6 +135,7 @@ const PasswordGenerator = () => {
         setExcludeChars(item.config.excludeChars);
         setPasswords(item.passwords);
         setShowHistory(false);
+        showToast('配置已恢复', '已加载历史记录中的配置');
     };
 
     return (
@@ -134,6 +144,8 @@ const PasswordGenerator = () => {
             margin: '0 auto',
             padding: '24px',
         }}>
+            <Toast open={open} onOpenChange={setOpen} title={content.title} description={content.description} />
+
             {/* 标题区域 */}
             <div style={{
                 textAlign: 'center',
@@ -164,20 +176,20 @@ const PasswordGenerator = () => {
                 marginBottom: '24px',
             }}>
                 {/* 字符类型选择 */}
-                <div style={{ marginBottom: '24px' }}>
+                <div style={{ marginBottom: '32px' }}>
                     <label style={{
                         display: 'block',
                         fontSize: '1rem',
                         fontWeight: '600',
                         color: 'var(--color-text)',
-                        marginBottom: '12px',
+                        marginBottom: '16px',
                     }}>
                         字符类型
                     </label>
                     <div style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: '12px',
+                        gap: '16px',
                     }}>
                         {[
                             { key: 'lowercase', label: '小写字母 (a-z)', color: 'coral' },
@@ -185,35 +197,33 @@ const PasswordGenerator = () => {
                             { key: 'numbers', label: '数字 (0-9)', color: 'mint' },
                             { key: 'special', label: '特殊字符', color: 'lavender' },
                         ].map(item => (
-                            <label
+                            <div
                                 key={item.key}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '8px',
-                                    padding: '12px 16px',
+                                    justifyContent: 'space-between',
+                                    padding: '16px',
                                     background: charSets[item.key] ? `var(--surface-${item.color})` : 'var(--surface-cream)',
                                     borderRadius: 'var(--radius-md)',
-                                    cursor: 'pointer',
                                     transition: 'var(--transition-smooth)',
-                                    fontWeight: '600',
-                                    color: 'var(--color-text)',
                                 }}
                             >
-                                <input
-                                    type="checkbox"
+                                <span style={{
+                                    fontWeight: '600',
+                                    color: 'var(--color-text)',
+                                }}>{item.label}</span>
+                                <Switch
                                     checked={charSets[item.key]}
-                                    onChange={(e) => setCharSets({ ...charSets, [item.key]: e.target.checked })}
-                                    style={{ cursor: 'pointer' }}
+                                    onCheckedChange={(checked) => setCharSets({ ...charSets, [item.key]: checked })}
                                 />
-                                {item.label}
-                            </label>
+                            </div>
                         ))}
                     </div>
                 </div>
 
                 {/* 自定义特殊字符 */}
-                <div style={{ marginBottom: '24px' }}>
+                <div style={{ marginBottom: '32px' }}>
                     <label style={{
                         display: 'block',
                         fontSize: '1rem',
@@ -231,20 +241,21 @@ const PasswordGenerator = () => {
                         disabled={!charSets.special}
                         style={{
                             width: '100%',
-                            padding: '12px 16px',
+                            padding: '16px',
                             fontSize: '1rem',
                             background: charSets.special ? 'var(--surface-lavender)' : 'var(--surface-cream)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-md)',
                             border: 'none',
                             outline: 'none',
-                            fontFamily: 'monospace',
+                            fontFamily: 'var(--font-mono)',
+                            transition: 'var(--transition-smooth)',
                         }}
                     />
                 </div>
 
                 {/* 排除字符 */}
-                <div style={{ marginBottom: '24px' }}>
+                <div style={{ marginBottom: '32px' }}>
                     <label style={{
                         display: 'block',
                         fontSize: '1rem',
@@ -261,14 +272,14 @@ const PasswordGenerator = () => {
                         placeholder="输入要排除的字符，如：iIl1o0O"
                         style={{
                             width: '100%',
-                            padding: '12px 16px',
+                            padding: '16px',
                             fontSize: '1rem',
                             background: 'var(--surface-rose)',
                             color: 'var(--color-text)',
                             borderRadius: 'var(--radius-md)',
                             border: 'none',
                             outline: 'none',
-                            fontFamily: 'monospace',
+                            fontFamily: 'var(--font-mono)',
                         }}
                     />
                 </div>
@@ -277,72 +288,60 @@ const PasswordGenerator = () => {
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                    gap: '16px',
+                    gap: '32px',
                 }}>
                     <div>
-                        <label style={{
-                            display: 'block',
-                            fontSize: '1rem',
-                            fontWeight: '600',
-                            color: 'var(--color-text)',
-                            marginBottom: '12px',
-                        }}>
-                            密码长度：{passwordLength}
-                        </label>
-                        <input
-                            type="range"
-                            min="8"
-                            max="99"
-                            value={passwordLength}
-                            onChange={(e) => setPasswordLength(Number(e.target.value))}
-                            style={{
-                                width: '100%',
-                                cursor: 'pointer',
-                            }}
-                        />
                         <div style={{
                             display: 'flex',
                             justifyContent: 'space-between',
-                            fontSize: '0.85rem',
-                            color: 'var(--color-text-light)',
-                            marginTop: '4px',
+                            marginBottom: '12px',
                         }}>
-                            <span>8</span>
-                            <span>99</span>
+                            <label style={{
+                                fontSize: '1rem',
+                                fontWeight: '600',
+                                color: 'var(--color-text)',
+                            }}>
+                                密码长度
+                            </label>
+                            <span style={{
+                                fontWeight: '700',
+                                color: 'var(--color-coral)',
+                            }}>{passwordLength}</span>
                         </div>
+                        <Slider
+                            value={[passwordLength]}
+                            onValueChange={(val) => setPasswordLength(val[0])}
+                            min={8}
+                            max={99}
+                            step={1}
+                        />
                     </div>
 
                     <div>
-                        <label style={{
-                            display: 'block',
-                            fontSize: '1rem',
-                            fontWeight: '600',
-                            color: 'var(--color-text)',
-                            marginBottom: '12px',
-                        }}>
-                            生成数量：{passwordCount}
-                        </label>
-                        <input
-                            type="range"
-                            min="1"
-                            max="20"
-                            value={passwordCount}
-                            onChange={(e) => setPasswordCount(Number(e.target.value))}
-                            style={{
-                                width: '100%',
-                                cursor: 'pointer',
-                            }}
-                        />
                         <div style={{
                             display: 'flex',
                             justifyContent: 'space-between',
-                            fontSize: '0.85rem',
-                            color: 'var(--color-text-light)',
-                            marginTop: '4px',
+                            marginBottom: '12px',
                         }}>
-                            <span>1</span>
-                            <span>20</span>
+                            <label style={{
+                                fontSize: '1rem',
+                                fontWeight: '600',
+                                color: 'var(--color-text)',
+                            }}>
+                                生成数量
+                            </label>
+                            <span style={{
+                                fontWeight: '700',
+                                color: 'var(--color-coral)',
+                            }}>{passwordCount}</span>
                         </div>
+                        <Slider
+                            value={[passwordCount]}
+                            onValueChange={(val) => setPasswordCount(val[0])}
+                            min={1}
+                            max={20}
+                            step={1}
+                        />
                     </div>
                 </div>
             </div>
@@ -450,7 +449,7 @@ const PasswordGenerator = () => {
                             >
                                 <span style={{
                                     flex: '1',
-                                    fontFamily: 'monospace',
+                                    fontFamily: 'var(--font-mono)',
                                     fontSize: '1.1rem',
                                     color: 'var(--color-text)',
                                     wordBreak: 'break-all',
@@ -566,7 +565,7 @@ const PasswordGenerator = () => {
                                         长度: {item.config.length} | 数量: {item.config.count}
                                     </div>
                                     <div style={{
-                                        fontFamily: 'monospace',
+                                        fontFamily: 'var(--font-mono)',
                                         fontSize: '0.9rem',
                                         color: 'var(--color-text-light)',
                                         whiteSpace: 'nowrap',
