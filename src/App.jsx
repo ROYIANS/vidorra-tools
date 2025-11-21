@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Footer from './components/Footer';
+import FavoriteButton from './components/FavoriteButton';
 import { tools } from './registry';
 
 function App() {
@@ -30,7 +31,15 @@ function App() {
               }>
                 <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ flex: '1', padding: '40px 20px' }}>
-                    <nav style={{ marginBottom: '40px', maxWidth: '1200px', margin: '0 auto 40px' }}>
+                    <nav style={{
+                      marginBottom: '40px',
+                      maxWidth: '1200px',
+                      margin: '0 auto 40px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      position: 'relative'
+                    }}>
                       <Link to="/" style={{
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -48,6 +57,7 @@ function App() {
                         <i className="ri-arrow-left-line"></i>
                         返回首页
                       </Link>
+                      <FavoriteButton toolId={tool.id} style={{ position: 'static' }} />
                     </nav>
                     <tool.component />
                   </div>

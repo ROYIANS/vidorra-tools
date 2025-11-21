@@ -1,12 +1,40 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Match from 'pinyin-match';
 import { tools, categories } from '../registry';
 import ToolBadge from '../components/ToolBadge';
+import FavoriteButton from '../components/FavoriteButton';
 import Footer from '../components/Footer';
+import { getFavorites } from '../utils/favorites';
 
 const Home = () => {
     const [search, setSearch] = useState('');
+    const [favorites, setFavorites] = useState([]);
+
+    // 加载收藏列表
+    useEffect(() => {
+        setFavorites(getFavorites());
+
+        // 监听收藏变化
+        const handleFavoritesChange = () => {
+            setFavorites(getFavorites());
+        };
+        window.addEventListener('favoritesChanged', handleFavoritesChange);
+
+        return () => {
+            window.removeEventListener('favoritesChanged', handleFavoritesChange);
+        };
+    }, []);
+
+    // 收藏的工具
+    const favoriteTools = useMemo(() => {
+        return tools.filter(tool => favorites.includes(tool.id));
+    }, [favorites]);
+
+    // 热门工具（badge 为 hot 的工具）
+    const hotTools = useMemo(() => {
+        return tools.filter(tool => tool.badge === 'hot');
+    }, []);
 
     // Group tools by category
     const toolsByCategory = useMemo(() => {
@@ -94,6 +122,7 @@ const Home = () => {
                     }}
                 >
                     <ToolBadge type={tool.badge} />
+                    <FavoriteButton toolId={tool.id} />
 
                     <div style={{
                         width: '72px',
@@ -228,6 +257,73 @@ const Home = () => {
                 </div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '80px' }}>
+                    {/* 收藏区域 */}
+                    {favoriteTools.length > 0 && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                <h2 style={{
+                                    fontSize: '2rem',
+                                    fontWeight: '800',
+                                    color: 'var(--color-text)'
+                                }}>
+                                    <i className="ri-star-fill" style={{
+                                        marginRight: '12px',
+                                        color: 'var(--color-rose)'
+                                    }}></i>
+                                    我的收藏
+                                </h2>
+                                <div style={{
+                                    flex: 1,
+                                    height: '2px',
+                                    background: 'var(--surface-rose)',
+                                    borderRadius: '2px'
+                                }}></div>
+                            </div>
+
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                                gap: '24px'
+                            }}>
+                                {favoriteTools.map(tool => <ToolCard key={tool.id} tool={tool} />)}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 热门区域 */}
+                    {hotTools.length > 0 && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                <h2 style={{
+                                    fontSize: '2rem',
+                                    fontWeight: '800',
+                                    color: 'var(--color-text)'
+                                }}>
+                                    <i className="ri-fire-fill" style={{
+                                        marginRight: '12px',
+                                        color: 'var(--color-coral)'
+                                    }}></i>
+                                    热门推荐
+                                </h2>
+                                <div style={{
+                                    flex: 1,
+                                    height: '2px',
+                                    background: 'var(--surface-coral)',
+                                    borderRadius: '2px'
+                                }}></div>
+                            </div>
+
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                                gap: '24px'
+                            }}>
+                                {hotTools.map(tool => <ToolCard key={tool.id} tool={tool} />)}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 分类区域 */}
                     {categories.map(cat => {
                         const catTools = toolsByCategory[cat.id];
                         if (!catTools || catTools.length === 0) return null;
