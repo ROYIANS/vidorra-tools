@@ -31,9 +31,9 @@ export const tools = [
         name: 'JSON 格式化',
         description: '美化、压缩、验证 JSON 数据，支持格式转换',
         category: 'utility',
-        badge: 'maintenance',
+        badge: 'hot',
         keywords: ['json', 'format', 'geshi', '格式化', 'meihua', '美化'],
-        component: ComingSoon
+        component: lazy(() => import('./tools/JsonFormatter'))
     },
     {
         id: 'base64',
