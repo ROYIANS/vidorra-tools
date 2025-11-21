@@ -26,10 +26,22 @@ const HachimiCode = () => {
         '北豆豆'       // 15
     ];
     // 扩充标点符号
-    const PUNCTUATION = [
+    const PUNCTUATION_SINGLE = [
         '，', '。', '！', '？', '、', '；', '：',
-        '~', '…', '·', '「', '」', '『', '』',
-        '（', '）', '【', '】', '《', '》'
+        '~', '…', '·'
+    ];
+
+    const PUNCTUATION_PAIRS = [
+        ['「', '」'],
+        ['『', '』'],
+        ['（', '）'],
+        ['【', '】'],
+        ['《', '》']
+    ];
+
+    const ALL_PUNCTUATION = [
+        ...PUNCTUATION_SINGLE,
+        ...PUNCTUATION_PAIRS.flat()
     ];
 
     // 将文本转换为字节数组
@@ -71,6 +83,7 @@ const HachimiCode = () => {
         let bitBuffer = 0;
         let bitCount = 0;
         let wordCount = 0;
+        let openPairIndex = -1; // 记录当前是否有未闭合的成对标点
 
         for (let i = 0; i < bytes.length; i++) {
             bitBuffer = (bitBuffer << 8) | bytes[i];
@@ -82,11 +95,32 @@ const HachimiCode = () => {
                 bitCount -= 4;
                 wordCount++;
 
-                // 每隔 2-3 个词组随机插入标点
-                if (wordCount >= 2 && Math.random() < 0.4) {
-                    const punctIndex = Math.floor(Math.random() * PUNCTUATION.length);
-                    result.push(PUNCTUATION[punctIndex]);
-                    wordCount = 0;
+                // 确保至少还有一个词组要生成，才插入标点（不插入到首尾）
+                const hasMoreBits = bitCount > 0 || i < bytes.length - 1;
+                const isNotFirst = result.length > 1;
+
+                if (isNotFirst && hasMoreBits) {
+                    // 如果有未闭合的成对标点，需要在适当时候闭合
+                    if (openPairIndex !== -1 && wordCount >= 1 && Math.random() < 0.5) {
+                        result.push(PUNCTUATION_PAIRS[openPairIndex][1]);
+                        openPairIndex = -1;
+                        wordCount = 0;
+                    }
+                    // 插入新标点
+                    else if (wordCount >= 2 && Math.random() < 0.3) {
+                        // 随机选择插入单个标点还是开始一个成对标点
+                        if (openPairIndex === -1 && Math.random() < 0.3) {
+                            // 开始一个成对标点
+                            openPairIndex = Math.floor(Math.random() * PUNCTUATION_PAIRS.length);
+                            result.push(PUNCTUATION_PAIRS[openPairIndex][0]);
+                            wordCount = 0;
+                        } else if (openPairIndex === -1) {
+                            // 插入单个标点
+                            const punctIndex = Math.floor(Math.random() * PUNCTUATION_SINGLE.length);
+                            result.push(PUNCTUATION_SINGLE[punctIndex]);
+                            wordCount = 0;
+                        }
+                    }
                 }
             }
         }
@@ -97,6 +131,11 @@ const HachimiCode = () => {
             result.push(HACHIMI_WORDS[index]);
         }
 
+        // 如果还有未闭合的成对标点，在最后闭合
+        if (openPairIndex !== -1) {
+            result.push(PUNCTUATION_PAIRS[openPairIndex][1]);
+        }
+
         return result.join('');
     };
 
@@ -104,7 +143,7 @@ const HachimiCode = () => {
     const decodeFromHachimi = (text) => {
         // 移除所有标点符号
         let cleanText = text;
-        PUNCTUATION.forEach(punct => {
+        ALL_PUNCTUATION.forEach(punct => {
             cleanText = cleanText.split(punct).join('');
         });
 
