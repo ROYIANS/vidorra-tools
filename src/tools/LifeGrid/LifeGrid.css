@@ -1,0 +1,436 @@
+/* 容器 */
+.life-grid-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(16px, 3vw, 32px);
+    min-height: 100vh;
+}
+
+/* 标题区域 */
+.life-grid-header {
+    text-align: center;
+    margin-bottom: clamp(24px, 5vw, 40px);
+}
+
+.life-grid-title {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: normal;
+    color: var(--color-coral);
+    margin-bottom: 12px;
+    font-family: var(--font-artistic);
+}
+
+.life-grid-subtitle {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    color: var(--color-text-light);
+    line-height: 1.6;
+}
+
+/* 配置区域 */
+.life-grid-config {
+    background-color: var(--surface-cream);
+    border-radius: var(--radius-lg);
+    padding: clamp(16px, 3vw, 24px);
+    margin-bottom: clamp(20px, 4vw, 32px);
+}
+
+.config-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.config-input-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.config-label {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+/* DatePicker wrapper */
+.config-input-group .DatePickerTrigger {
+    width: 100%;
+    max-width: 280px;
+}
+
+.config-toggle-btn {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-white);
+    background-color: var(--color-lavender);
+    border-radius: var(--radius-full);
+    transition: var(--transition-smooth);
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.config-toggle-btn:hover {
+    transform: scale(1.05);
+    background-color: var(--color-coral);
+}
+
+/* 高级设置 */
+.config-advanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 2px solid var(--color-bg);
+}
+
+.config-slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-slider-label {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+/* 年龄展示 */
+.life-grid-age-display {
+    text-align: center;
+    margin-bottom: clamp(20px, 4vw, 32px);
+    padding: 24px;
+    background-color: var(--surface-sunny);
+    border-radius: var(--radius-lg);
+}
+
+.age-number {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--color-coral);
+    margin-bottom: 8px;
+}
+
+.age-text {
+    font-size: 1rem;
+    color: var(--color-text-light);
+}
+
+/* 人生网格 */
+.life-grid-main {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: clamp(16px, 3vw, 32px);
+    margin-bottom: clamp(20px, 4vw, 32px);
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: clamp(4px, 1vw, 8px);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.grid-block {
+    aspect-ratio: 1;
+    border-radius: clamp(2px, 0.5vw, 4px);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.grid-block:hover {
+    transform: scale(1.2);
+    z-index: 10;
+}
+
+/* 色块颜色 - 根据你的要求 */
+.grid-block-lived {
+    background-color: #6BCF7F; /* 薄荷绿 - 已度过 */
+}
+
+.grid-block-current {
+    background-color: #FFD93D; /* 阳光色 - 当前 */
+    animation: blink 1.5s ease-in-out infinite;
+    border: 2px solid var(--color-coral);
+}
+
+.grid-block-sleep {
+    background-color: #A3D5FF; /* 浅蓝色 - 睡眠 */
+}
+
+.grid-block-work {
+    background-color: #8B6F47; /* 咖啡色 - 工作 */
+}
+
+.grid-block-retired {
+    background-color: #FF9F1C; /* 橙色 - 退休 */
+}
+
+.grid-block-child {
+    background-color: #FFB088; /* 桃色 - 陪伴孩子 */
+}
+
+.grid-block-parents {
+    background-color: #FF8FA3; /* 玫瑰色 - 陪伴父母 */
+}
+
+.grid-block-free {
+    background-color: #D3D3D3; /* 灰色 - 自由时间 */
+}
+
+/* 闪烁动画 */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+/* 图例 */
+.life-grid-legend {
+    background-color: var(--surface-cream);
+    border-radius: var(--radius-lg);
+    padding: clamp(16px, 3vw, 24px);
+    margin-bottom: clamp(20px, 4vw, 32px);
+}
+
+.legend-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 16px;
+}
+
+.legend-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-color {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.legend-color-lived {
+    background-color: #6BCF7F;
+}
+
+.legend-color-current {
+    background-color: #FFD93D;
+    animation: blink 1.5s ease-in-out infinite;
+}
+
+.legend-color-sleep {
+    background-color: #A3D5FF;
+}
+
+.legend-color-work {
+    background-color: #8B6F47;
+}
+
+.legend-color-retired {
+    background-color: #FF9F1C;
+}
+
+.legend-color-child {
+    background-color: #FFB088;
+}
+
+.legend-color-parents {
+    background-color: #FF8FA3;
+}
+
+.legend-color-free {
+    background-color: #D3D3D3;
+}
+
+.legend-item span {
+    font-size: 0.9rem;
+    color: var(--color-text);
+}
+
+/* 统计数据 */
+.life-grid-stats {
+    background-color: var(--surface-mint);
+    border-radius: var(--radius-lg);
+    padding: clamp(16px, 3vw, 24px);
+    margin-bottom: clamp(20px, 4vw, 32px);
+}
+
+.stats-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 16px;
+}
+
+.stats-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+}
+
+.stats-item {
+    text-align: center;
+    padding: 16px 12px;
+    background-color: var(--color-white);
+    border-radius: var(--radius-md);
+    transition: var(--transition-smooth);
+}
+
+.stats-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stats-percent {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.stats-percent-lived {
+    color: #6BCF7F;
+}
+
+.stats-percent-sleep {
+    color: #A3D5FF;
+}
+
+.stats-percent-work {
+    color: #8B6F47;
+}
+
+.stats-percent-child {
+    color: #FFB088;
+}
+
+.stats-percent-parents {
+    color: #FF8FA3;
+}
+
+.stats-percent-retired {
+    color: #FF9F1C;
+}
+
+.stats-percent-free {
+    color: #808080;
+}
+
+.stats-label {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-bottom: 4px;
+}
+
+.stats-count {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+}
+
+/* 感悟文字 */
+.life-grid-quote {
+    margin-top: clamp(20px, 4vw, 32px);
+    padding: clamp(16px, 3vw, 24px);
+    background-color: var(--surface-lavender);
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.life-grid-quote p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--color-text);
+    line-height: 1.8;
+    font-style: italic;
+    margin: 0;
+}
+
+/* 操作按钮 */
+.life-grid-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: clamp(20px, 4vw, 32px);
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--radius-full);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    font-family: var(--font-sans);
+}
+
+.action-btn-save {
+    background-color: var(--color-coral);
+    color: var(--color-white);
+}
+
+.action-btn-save:hover {
+    transform: scale(1.05);
+    background-color: var(--color-rose);
+}
+
+.action-btn i {
+    font-size: 1.2rem;
+}
+
+/* 空状态 */
+.life-grid-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--color-text-light);
+    font-size: 1.1rem;
+    background-color: var(--surface-cream);
+    border-radius: var(--radius-lg);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .grid-container {
+        gap: 3px;
+    }
+
+    .config-main {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .config-input-group .DatePickerTrigger {
+        max-width: 100%;
+    }
+
+    .config-toggle-btn {
+        width: 100%;
+    }
+
+    .config-advanced {
+        grid-template-columns: 1fr;
+    }
+}
