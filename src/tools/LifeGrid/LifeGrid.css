@@ -502,14 +502,14 @@
 /* 时间详细统计 */
 .time-details-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: clamp(20px, 4vw, 32px);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(16px, 3vw, 32px);
     margin-bottom: clamp(20px, 4vw, 32px);
 }
 
 .time-details-section {
     background-color: transparent;
-    padding: clamp(16px, 3vw, 24px);
+    padding: clamp(12px, 2.5vw, 24px);
 }
 
 .time-details-section:first-child {
@@ -523,22 +523,22 @@
 }
 
 .time-details-title {
-    font-size: 1.3rem;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
     font-weight: 700;
     color: var(--color-text);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     text-align: center;
 }
 
 .time-details-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: clamp(8px, 2vw, 16px);
 }
 
 .time-item {
     background-color: transparent;
-    padding: 12px 8px;
+    padding: clamp(8px, 2vw, 12px) clamp(4px, 1vw, 8px);
     text-align: center;
     transition: var(--transition-smooth);
 }
@@ -548,15 +548,16 @@
 }
 
 .time-value {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
     font-weight: 800;
     color: var(--color-coral);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     font-family: var(--font-artistic);
+    word-break: break-word;
 }
 
 .time-label {
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
     color: var(--color-text);
     font-weight: 600;
 }
@@ -586,9 +587,49 @@
 
     .time-details-container {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .time-details-section {
+        padding: 16px 12px;
     }
 
     .time-details-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .time-value {
+        font-size: 1.3rem;
+    }
+
+    .time-label {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .time-details-container {
+        gap: 12px;
+    }
+
+    .time-details-section {
+        padding: 12px 8px;
+    }
+
+    .time-details-grid {
+        gap: 6px;
+    }
+
+    .time-item {
+        padding: 8px 4px;
+    }
+
+    .time-value {
+        font-size: 1.1rem;
+    }
+
+    .time-label {
+        font-size: 0.7rem;
     }
 }
