@@ -31,7 +31,7 @@ export const tools = [
         name: 'JSON 格式化',
         description: '美化、压缩、验证 JSON 数据，支持格式转换',
         category: 'utility',
-        badge: 'hot',
+        badge: 'new',
         keywords: ['json', 'format', 'geshi', '格式化', 'meihua', '美化'],
         component: lazy(() => import('./tools/JsonFormatter'))
     },
@@ -177,7 +177,7 @@ export const tools = [
         name: '哈基米密码',
         description: '有趣的文本加密工具，将任何文字转换成"哈基米曼波南北绿豆"组成的密文',
         category: 'fun',
-        badge: 'new',
+        badge: 'hot',
         keywords: ['hachimi', 'hajimi', '哈基米', 'jiami', '加密', 'mima', '密码', 'encode'],
         component: lazy(() => import('./tools/HachimiCode'))
     },

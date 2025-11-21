@@ -6,9 +6,31 @@ const HachimiCode = () => {
     const [outputText, setOutputText] = useState('');
     const [mode, setMode] = useState('encode'); // 'encode' or 'decode'
 
-    // 哈基米字符集：8个字符对应3位二进制
-    const HACHIMI_CHARS = ['哈', '基', '米', '曼', '波', '南', '北', '绿', '豆'];
-    const PUNCTUATION = ['，', '。', '、', '！', '？', '；', '：'];
+    // 哈基米词组集：16个指定词组对应4位二进制
+    const HACHIMI_WORDS = [
+        '哈基米',      // 0
+        '曼波哈',      // 1
+        '曼波波',      // 2
+        '哈哈米',      // 3
+        '哈基基',      // 4
+        '南绿豆',      // 5
+        '北绿豆',      // 6
+        '南北绿',      // 7
+        '南北豆',      // 8
+        '哈哈哈',      // 9
+        '北南绿',      // 10
+        '北南豆',      // 11
+        '南北绿豆',    // 12
+        '曼曼波',      // 13
+        '南豆豆',      // 14
+        '北豆豆'       // 15
+    ];
+    // 扩充标点符号
+    const PUNCTUATION = [
+        '，', '。', '！', '？', '、', '；', '：',
+        '~', '…', '·', '「', '」', '『', '』',
+        '（', '）', '【', '】', '《', '》'
+    ];
 
     // 将文本转换为字节数组
     const textToBytes = (text) => {
@@ -43,51 +65,42 @@ const HachimiCode = () => {
         return result;
     };
 
-    // 编码：将字节转换为哈基米字符
+    // 编码：将字节转换为哈基米词组（Base16编码方式，4位一组）
     const encodeToHachimi = (bytes) => {
-        let result = '';
+        const result = [];
         let bitBuffer = 0;
         let bitCount = 0;
-        let charCount = 0;
+        let wordCount = 0;
 
         for (let i = 0; i < bytes.length; i++) {
             bitBuffer = (bitBuffer << 8) | bytes[i];
             bitCount += 8;
 
-            while (bitCount >= 3) {
-                const index = (bitBuffer >> (bitCount - 3)) & 0x07;
-                result += HACHIMI_CHARS[index];
-                bitCount -= 3;
-                charCount++;
+            while (bitCount >= 4) {
+                const index = (bitBuffer >> (bitCount - 4)) & 0x0F; // 取4位 (0-15)
+                result.push(HACHIMI_WORDS[index]);
+                bitCount -= 4;
+                wordCount++;
 
-                // 每隔 8-12 个字符随机插入标点
-                if (charCount >= 8 && Math.random() < 0.3) {
+                // 每隔 2-3 个词组随机插入标点
+                if (wordCount >= 2 && Math.random() < 0.4) {
                     const punctIndex = Math.floor(Math.random() * PUNCTUATION.length);
-                    result += PUNCTUATION[punctIndex];
-                    charCount = 0;
+                    result.push(PUNCTUATION[punctIndex]);
+                    wordCount = 0;
                 }
             }
         }
 
-        // 处理剩余的位
+        // 处理剩余的位（padding）
         if (bitCount > 0) {
-            const index = (bitBuffer << (3 - bitCount)) & 0x07;
-            result += HACHIMI_CHARS[index];
+            const index = (bitBuffer << (4 - bitCount)) & 0x0F;
+            result.push(HACHIMI_WORDS[index]);
         }
 
-        // 确保不以标点开头
-        while (PUNCTUATION.includes(result[0])) {
-            result = result.substring(1);
-        }
-
-        // 在末尾添加长度标记（使用特定模式）
-        const lengthMarker = HACHIMI_CHARS[bytes.length % 8];
-        result += lengthMarker;
-
-        return result;
+        return result.join('');
     };
 
-    // 解码：将哈基米字符转换回字节
+    // 解码：将哈基米词组转换回字节（贪婪匹配，优先长词组）
     const decodeFromHachimi = (text) => {
         // 移除所有标点符号
         let cleanText = text;
@@ -95,23 +108,42 @@ const HachimiCode = () => {
             cleanText = cleanText.split(punct).join('');
         });
 
-        // 移除长度标记（最后一个字符）
-        if (cleanText.length > 0) {
-            cleanText = cleanText.substring(0, cleanText.length - 1);
+        console.log('清理后文本:', cleanText);
+
+        // 将文本拆分为词组（贪婪匹配：优先匹配长词组）
+        const words = [];
+        let i = 0;
+        while (i < cleanText.length) {
+            let matched = false;
+            // 从最长词组(4字)到最短(3字)依次匹配
+            for (let len = 4; len >= 3; len--) {
+                if (i + len > cleanText.length) continue;
+                const word = cleanText.substring(i, i + len);
+                const index = HACHIMI_WORDS.indexOf(word);
+                if (index !== -1) {
+                    console.log(`匹配到词组 "${word}" -> 索引 ${index}`);
+                    words.push(index);
+                    i += len;
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) {
+                console.warn(`位置 ${i} 无法识别: ${cleanText.substring(i, i + 4)}`);
+                i++; // 跳过一个字符继续
+            }
         }
 
+        console.log('词组索引数组:', words);
+
+        // 将词组索引转换为字节
         const bytes = [];
         let bitBuffer = 0;
         let bitCount = 0;
 
-        for (let i = 0; i < cleanText.length; i++) {
-            const char = cleanText[i];
-            const index = HACHIMI_CHARS.indexOf(char);
-
-            if (index === -1) continue; // 跳过无法识别的字符
-
-            bitBuffer = (bitBuffer << 3) | index;
-            bitCount += 3;
+        for (const wordIndex of words) {
+            bitBuffer = (bitBuffer << 4) | wordIndex; // 每个词组代表4位
+            bitCount += 4;
 
             while (bitCount >= 8) {
                 const byte = (bitBuffer >> (bitCount - 8)) & 0xFF;
@@ -123,7 +155,7 @@ const HachimiCode = () => {
         return new Uint8Array(bytes);
     };
 
-    // 加密处理
+    // 加密处理：文本 -> 加密 -> 编码
     const handleEncode = () => {
         if (!inputText.trim()) {
             setOutputText('');
@@ -131,17 +163,32 @@ const HachimiCode = () => {
         }
 
         try {
-            const bytes = textToBytes(inputText);
-            const key = deriveKey(password, bytes.length);
-            const encrypted = xorCrypt(bytes, key);
+            console.log('=== 加密开始 ===');
+            console.log('原文:', inputText);
+
+            // 步骤1: 文本转字节
+            const textBytes = textToBytes(inputText);
+            console.log('字节数组:', textBytes);
+            console.log('字节数:', textBytes.length);
+
+            // 步骤2: 派生密钥并加密
+            const key = deriveKey(password, textBytes.length);
+            const encrypted = xorCrypt(textBytes, key);
+            console.log('加密后:', encrypted);
+
+            // 步骤3: 编码为哈基米词组
             const encoded = encodeToHachimi(encrypted);
+            console.log('密文:', encoded);
+            console.log('=== 加密完成 ===');
+
             setOutputText(encoded);
         } catch (error) {
+            console.error('加密失败:', error);
             setOutputText('加密失败：' + error.message);
         }
     };
 
-    // 解密处理
+    // 解密处理：解码 -> 解密 -> 转文本
     const handleDecode = () => {
         if (!inputText.trim()) {
             setOutputText('');
@@ -149,12 +196,27 @@ const HachimiCode = () => {
         }
 
         try {
+            console.log('=== 解密开始 ===');
+            console.log('密文:', inputText);
+
+            // 步骤1: 解码哈基米词组为字节
             const decoded = decodeFromHachimi(inputText);
+            console.log('解码后字节数组:', decoded);
+            console.log('解码后字节数:', decoded.length);
+
+            // 步骤2: 派生密钥并解密
             const key = deriveKey(password, decoded.length);
             const decrypted = xorCrypt(decoded, key);
+            console.log('解密后字节数组:', decrypted);
+
+            // 步骤3: 字节转文本
             const text = bytesToText(decrypted);
+            console.log('解密后文本:', text);
+            console.log('=== 解密完成 ===');
+
             setOutputText(text);
         } catch (error) {
+            console.error('解密失败:', error);
             setOutputText('解密失败：可能是密文格式错误或口令不正确');
         }
     };
@@ -214,7 +276,11 @@ const HachimiCode = () => {
                     color: 'var(--color-text-light)',
                     lineHeight: '1.6',
                 }}>
-                    将任何文字转换成由"哈基米曼波南北绿豆"组成的趣味密文
+                    将任何文字转换成由"哈基米"、"曼波哈"、"南北绿豆"等16种趣味词组组成的密文
+                    <br />
+                    <span style={{ fontSize: '0.85rem', opacity: 0.8 }}>
+                        ✨ 采用16词组(4位编码) + XOR加密 + 20种标点符号
+                    </span>
                 </p>
             </div>
 
