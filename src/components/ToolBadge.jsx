@@ -15,7 +15,7 @@ const ToolBadge = ({ type }) => {
         <div style={{
             position: 'absolute',
             top: '12px',
-            right: '12px',
+            left: '12px',
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
